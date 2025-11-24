@@ -17,7 +17,6 @@ python scripts/demo_inference.py \
     --video ${VIDEO_NAME} \
     --outdir examples/res --save_video
 
-
 ffmpeg -i /home/gsantm/repositories/AlphaPose/examples/res/AlphaPose_test.mp4 \
   -c:v libx264 -pix_fmt yuv420p -movflags +faststart \
   /home/gsantm/repositories/AlphaPose/examples/res/AlphaPose_test_h264.mp4
