@@ -1,4 +1,9 @@
-# AlphaPose: Environment & Inference Helper (Cluster-Friendly)
+# AlphaPose: Environment & Inference Instructions
+
+An example output frame produced by the inference script, showing the detected human pose overlay:
+![Input image](media/134.jpg)
+
+
 
 This README explains how to **install** and **run** AlphaPose on a CUDA 11.8 cluster using two helper scripts you created:
 
