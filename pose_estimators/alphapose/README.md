@@ -1,8 +1,9 @@
 # AlphaPose: Environment & Inference Instructions
 
-An example output frame produced by the inference script, showing the detected human pose overlay:
-![Input image](media/134.jpg)
 
+>![Input image](media/134.jpg)
+>
+>An example output frame produced by the inference script, showing the detected human pose overlay
 
 
 This README explains how to **install** and **run** AlphaPose on a CUDA 11.8 cluster using two helper scripts you created:
