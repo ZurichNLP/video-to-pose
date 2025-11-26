@@ -44,6 +44,8 @@ This README explains how to **install** and **run** AlphaPose on a CUDA 11.8 clu
 >
 > If your cluster uses different names, **edit the `module load ...` lines** accordingly.
 
+>**Note:** The paths in the scripts and this README are preconfigured for my environment; please update them to match your own directory structure and filenames before running anything.
+
 ---
 
 ## What the scripts do
@@ -131,6 +133,50 @@ Per the official repo, you must manually download:
 - The `scripts/inference.sh` usage in the README
 
 > Official repo: https://github.com/MVIG-SJTU/AlphaPose
+
+- **Storage tip (highly recommended):** Large assets (detector weights, pretrained checkpoints, datasets) don’t need to live inside the cloned repo. To save quota and avoid duplication, store them in a high-capacity path (e.g., /scratch, /work, /lustre) and symlink the expected folders inside the repo:
+
+   ```bash
+   # link_dir <shared_path> <repo_path>
+   # - If <repo_path> exists and has files, they are moved (not deleted) to <shared_path>.
+   # - Finally, <repo_path> becomes a symlink to <shared_path>.
+   link_dir() {
+     local SRC="$1"   # e.g., /scratch/$USER/pose_assets/pretrained_models
+     local DEST="$2"  # e.g., /home/gsantm/repositories/AlphaPose/pretrained_models
+   
+     mkdir -p "$SRC"
+   
+     # If DEST is already the correct symlink, we're done
+     if [ -L "$DEST" ] && [ "$(readlink -f "$DEST")" = "$(readlink -f "$SRC")" ]; then
+       echo "[ok] $DEST already links to $SRC"
+       return 0
+     fi
+   
+     # If DEST exists and is not a symlink, migrate its contents safely
+     if [ -e "$DEST" ] && [ ! -L "$DEST" ]; then
+       echo "[info] Migrating existing contents from $DEST -> $SRC"
+       mkdir -p "$SRC"
+       # Move files without overwriting; keep both if name clash (suffix ~)
+       rsync -a --ignore-existing "$DEST"/ "$SRC"/
+       # Move remaining (including clashes) with suffix
+       rsync -a --backup --suffix='.~old~' "$DEST"/ "$SRC"/
+       # Remove the original dir once migrated
+       rm -rf "$DEST"
+     fi
+   
+     # If DEST is a symlink to somewhere else, replace it
+     if [ -L "$DEST" ] && [ "$(readlink -f "$DEST")" != "$(readlink -f "$SRC")" ]; then
+       echo "[warn] $DEST is a symlink to a different target; updating to $SRC"
+       rm -f "$DEST"
+     fi
+   
+     # Create the symlink
+     ln -sfn "$SRC" "$DEST"
+     echo "[ok] Linked $DEST -> $SRC"
+   }
+  ```
+  
+  This keeps your repository small while preserving the original directory layout expected by the scripts.
 
 ---
 
