@@ -14,5 +14,4 @@ export REPO_PATH="/home/gsantm/repositories/PoseFormerV2/"
 
 cd $REPO_PATH
 
-#python demo/vis.py --video sample_video.mp4
 python demo/vis.py --video test.mp4
