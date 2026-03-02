@@ -14,13 +14,13 @@ cd video-to-pose
 To install a specific estimator on your system:
 
 ```bash
-install.sh --type openpose [--slurm]
+bash install.sh --type openpose [--slurm]
 ```
 
 Then to estimate poses for a folder of input videos:
 
 ```bash
-videos_to_poses.sh \
+bash videos_to_poses.sh \
     --type openpose \
     --input /path/to/videos \
     --output /path/to/poses [--args] [--slurm]
