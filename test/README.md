@@ -42,11 +42,27 @@ This will:
 - Run batch pose estimation on the three test videos
 - Run `pytest test/test_pose_shape.py` to validate the output
 
+### MediaPipe
+
+**Requirements:** Python 3.
+
+```bash
+bash test/test_mediapipe.sh
+```
+
+This will:
+- Download test videos (first run only)
+- Set up a Python venv with `mediapipe` and `pose-format` (first run only)
+- Run batch pose estimation on the three test videos
+- Run `pytest test/test_pose_shape.py` to validate the output
+
 ## Output shape tests
 
-`test_pose_shape.py` is a pytest file that loads every `.pose` file found under `data/output/<estimator>/` and asserts its shape is correct.
+`test_pose_shape.py` is a pytest file that loads every `.pose` file found under `data/output/<estimator>/` and asserts its shape is correct. It contains separate test functions per estimator.
 
-For OpenPose, the expected shape of `pose.body.data` is `(frames, people, keypoints, coordinates)`:
+### OpenPose
+
+Expected shape of `pose.body.data` — `(frames, people, keypoints, coordinates)`:
 
 | Dimension   | Expected value | Notes                                             |
 |-------------|----------------|---------------------------------------------------|
@@ -54,3 +70,14 @@ For OpenPose, the expected shape of `pose.body.data` is `(frames, people, keypoi
 | people      | >= 1           | At least one person detected                      |
 | keypoints   | 137            | 25 body + 70 face + 21 left hand + 21 right hand |
 | coordinates | 2              | x, y                                              |
+
+### MediaPipe
+
+Expected shape of `pose.body.data` — `(frames, people, keypoints, coordinates)`:
+
+| Dimension   | Expected value | Notes                                                                        |
+|-------------|----------------|------------------------------------------------------------------------------|
+| frames      | 133            | Fixed for the test video                                                     |
+| people      | 1              | MediaPipe Holistic detects exactly 1 person                                  |
+| keypoints   | 586            | 33 pose + 478 face (with iris) + 21 left hand + 21 right hand + 33 pose world |
+| coordinates | 3              | x, y, z                                                                      |

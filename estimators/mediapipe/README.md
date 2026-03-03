@@ -8,7 +8,18 @@ Additional arguments specific to MediaPipe that can be passed to the estimator v
 
 ## Model and code details
 
-The MediaPipe Holistic model is used, producing landmarks for the full body: 33 pose keypoints, 468 face keypoints (478 with iris refinement), 21 left hand keypoints, and 21 right hand keypoints.
+The MediaPipe Holistic model is used, producing **586 keypoints** in total across 5 components:
+
+| Component           | Keypoints |
+|---------------------|-----------|
+| Pose landmarks      | 33        |
+| Face landmarks      | 478       |
+| Left hand landmarks | 21        |
+| Right hand landmarks| 21        |
+| Pose world landmarks| 33        |
+| **Total**           | **586**   |
+
+Each keypoint has 3 coordinates (x, y, z). Only 1 person is detected per frame.
 
 Pose estimation is performed via the `videos_to_poses` command from the 
 [`pose-format`](https://github.com/sign-language-processing/pose) library, , which is a wrapper around the 
