@@ -30,8 +30,8 @@ echo "Creating Python virtual environment at $VENV_DIR ..."
 python3 -m venv "$VENV_DIR"
 
 echo "Installing dependencies ..."
-"$VENV_DIR/bin/pip" install --upgrade pip
-"$VENV_DIR/bin/pip" install -r "$MEDIAPIPE_DIR/requirements.txt"
+"$VENV_DIR/bin/pip" install --no-cache-dir --upgrade pip
+"$VENV_DIR/bin/pip" install --no-cache-dir -r "$MEDIAPIPE_DIR/requirements.txt"
 
 echo
 echo "=== Setup complete ==="
