@@ -50,7 +50,7 @@ bash videos_to_poses.sh \
     --input /path/to/videos \
     --output /path/to/poses \
     --slurm
-    --chunks 20
+    --extra --chunks 20
 ```
 
 to specify the number of chunks to split the input videos into, and the number of resulting jobs to submit.
