@@ -23,7 +23,7 @@ Then to estimate poses for a folder of input videos:
 bash videos_to_poses.sh \
     --type openpose \
     --input /path/to/videos \
-    --output /path/to/poses [--args] [--slurm]
+    --output /path/to/poses [--extra] [--slurm]
 ```
 
 ### Arguments
@@ -33,14 +33,33 @@ bash videos_to_poses.sh \
 | --type | Which pose estimator to use. Available choices: `openpose`, ...  |
 | --input  | Path to folder of videos  |
 | --output | Path to folder of .pose files  |
-| --args (optional)   |  Additional arguments passed on to the estimator-specific run script |
+| --extra (optional)   |  Additional arguments passed on to the estimator-specific run script |
 | --slurm (optional) | Whether to submit estimation jobs to a SLURM queue instead of executing directly  |
+
+Installing may also differ if `--slurm` is used, so if you are working on a SLURM cluster, also
+use `--slurm` for the installation script above.
+
+For additional, estimator-specific arguments that can be passed via `--extra`, see the respective estimator's
+README file (in the `estimators` sub-folders).
+
+For instance, for the `openpose` estimator, if `--slurm` is used, a further argument `--chunks` can be passed like so:
+
+```bash
+bash videos_to_poses.sh \
+    --type openpose \
+    --input /path/to/videos \
+    --output /path/to/poses \
+    --slurm
+    --chunks 20
+```
+
+to specify the number of chunks to split the input videos into, and the number of resulting jobs to submit.
 
 ## Pose estimators included
 
-| Estimator  | Exact version, details  |
-|----------|---|
-| openpose |  137-keypoint model |
+| Estimator  | Exact version, details  | Requirements |
+|----------|---|--------------------------------------|
+| openpose |  137-keypoint model | Singularity CE >= 3.7 or Apptainer, NVIDIA GPU with driver supporting CUDA 11.x |
 
 ## Details on output pose format
 
