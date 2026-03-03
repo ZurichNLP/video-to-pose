@@ -72,6 +72,10 @@ If `--slurm` is used, then pose estimation jobs are submitted with SLURM command
 These commands are meant as an example and are tailored to a UZH SLURM cluster. They are not expected to run without some modifications on
 other clusters.
 
+## Testing
+
+Estimator-specific tests live in the `test/` directory. See [`test/README.md`](test/README.md) for details on how to run them.
+
 ## Acknowledgements
 
 (cite paper once on Arxiv)

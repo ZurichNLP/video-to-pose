@@ -12,6 +12,9 @@ jobs to submit. Only allowed together with `--slurm`.
 
 The 137-keypoint OpenPose model will  be used (as opposed to the 135-keypoint model).
 
+Caveat: sometimes OpenPose will detect several people even in frames where only one person is visible.
+Downstream processing should expect this edge case.
+
 The scripts in this directory re-use code from https://github.com/bricksdont/openpose-singularity-uzh/, which
 uses a pre-built docker image for OpenPose, based on the original OpenPose source code
 (https://github.com/CMU-Perceptual-Computing-Lab/openpose).

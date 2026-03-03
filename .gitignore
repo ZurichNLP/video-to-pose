@@ -1,5 +1,6 @@
 checkpoints
 tools
+test/data/
 *.log
 *.lock
 .env
