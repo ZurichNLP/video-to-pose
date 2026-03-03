@@ -75,3 +75,12 @@ other clusters.
 ## Acknowledgements
 
 (cite paper once on Arxiv)
+
+```bibtex
+@misc{obrien-et-al-2026video-to-pose, 
+    title={Convenience code for installing and using several pose estimation systems},
+    author={O'Brien, Catherine and Sant, Gerard and M{\"u}ller, Mathias},
+    howpublished={\url{https://github.com/ZurichNLP/video-to-pose}},
+    year={2026}
+}
+```
