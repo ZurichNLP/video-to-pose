@@ -3,6 +3,7 @@ set -euo pipefail
 
 OPENPOSE_DIR="$(cd "$(dirname "$0")" && pwd)"
 REPO_DIR="$(dirname "$OPENPOSE_DIR")"
+TOOLS=$REPO_DIR/tools
 
 USE_SLURM=false
 
@@ -13,7 +14,11 @@ for arg in "$@"; do
     esac
 done
 
-git clone https://github.com/bricksdont/openpose-singularity-uzh $REPO_DIR/tools/openpose/openpose-singularity-uzh
+mkdir -p $TOOLS/openpose
+
+OPENPOSE_SINGULARITY_DIR=$TOOLS/openpose/openpose-singularity-uzh
+
+git clone https://github.com/bricksdont/openpose-singularity-uzh $OPENPOSE_SINGULARITY_DIR
 
 # steps taken from here: https://github.com/bricksdont/openpose-singularity-uzh/tree/main
 
@@ -22,11 +27,11 @@ git clone https://github.com/bricksdont/openpose-singularity-uzh $REPO_DIR/tools
 if [ "$USE_SLURM" = true ]; then
     # slurm_build_container.sh uses $SLURM_SUBMIT_DIR to locate scripts/, so sbatch
     # must be called from the repo root.
-    (cd $REPO_DIR/tools/openpose/openpose-singularity-uzh && sbatch scripts/slurm_build_container.sh)
+    (cd $OPENPOSE_SINGULARITY_DIR && sbatch scripts/slurm_build_container.sh)
     echo "Container build submitted as SLURM job. Monitor with: squeue -u \$USER"
 else
-    bash $REPO_DIR/tools/openpose/openpose-singularity-uzh/scripts/build_container.sh
+    bash $OPENPOSE_SINGULARITY_DIR/scripts/build_container.sh
 fi
 
 # 5. Set up Python virtual environment
-bash $REPO_DIR/tools/openpose/openpose-singularity-uzh/scripts/setup_venv.sh
+bash $OPENPOSE_SINGULARITY_DIR/scripts/setup_venv.sh
