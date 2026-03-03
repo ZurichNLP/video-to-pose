@@ -27,14 +27,22 @@ TOOLS=$REPO_DIR/tools
 
 **Argument parsing** — use a `while [[ $# -gt 0 ]]` loop with `case`/`shift 2` for key-value args and `shift` for flags. Reject unknown arguments with `exit 1`.
 
-**Forwarding extra args** — use a bash array + `read -ra` to safely split a string of extra arguments so they expand as separate tokens:
+**Passing through unknown args** — `videos_to_poses.sh` consumes only `--type`, `--input`, `--output` and collects everything else into a `PASSTHROUGH` array, which is forwarded verbatim to the estimator script. For each unknown `--flag`, the next token is also captured if it does not start with `--` (i.e. it is a value):
 ```bash
-EXTRA=()
---extra) read -ra EXTRA <<< "$2"; shift 2 ;;
+PASSTHROUGH=()
+--*)
+    PASSTHROUGH+=("$1")
+    if [[ $# -gt 1 && "$2" != --* ]]; then
+        PASSTHROUGH+=("$2")
+        shift 2
+    else
+        shift
+    fi
+    ;;
 # call with:
-some_script "${EXTRA[@]}"
+some_script "${PASSTHROUGH[@]}"
 ```
-Do NOT pass extra args as an unquoted string variable (`$ARGS`) — it breaks on spaces. Do NOT double-quote it — it passes as one token.
+Estimator-specific scripts are responsible for accepting or rejecting any argument they receive.
 
 **Forwarding `--slurm`** — build a `SLURM_ARG` variable and pass it unquoted:
 ```bash

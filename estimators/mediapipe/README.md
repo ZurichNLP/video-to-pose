@@ -2,7 +2,7 @@
 
 ## Estimator-specific arguments
 
-Additional arguments specific to MediaPipe that can be passed to the estimator via `--extra` when the main script is called:
+Additional arguments specific to MediaPipe that can be passed directly to the main script:
 
 `--num-workers`: number of parallel workers for processing videos. Defaults to 1.
 

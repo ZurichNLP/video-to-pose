@@ -2,8 +2,7 @@
 
 ## Estimator-specific arguments
 
-Additional arguments specific to OpenPose that can be passed to the estimator via `--extra` when the main script is
-called:
+Additional arguments specific to OpenPose that can be passed directly to the main script:
 
 `--chunks`: to specify the number of chunks to split the input videos into, and the number of resulting
 jobs to submit. Only allowed together with `--slurm`.
