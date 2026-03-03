@@ -32,6 +32,21 @@ fi
 
 OPENPOSE_SINGULARITY_DIR=$TOOLS/openpose/openpose-singularity-uzh
 
+if [[ ! -d "$OPENPOSE_SINGULARITY_DIR" ]]; then
+    echo "Error: openpose-singularity-uzh repo not found. Please run install_openpose.sh first." >&2
+    exit 1
+fi
+
+if [[ ! -f "$OPENPOSE_SINGULARITY_DIR/openpose.sif" ]]; then
+    echo "Error: openpose.sif not found. Please run install_openpose.sh first (or wait for the SLURM build job to complete)." >&2
+    exit 1
+fi
+
+if [[ ! -d "$OPENPOSE_SINGULARITY_DIR/venv" ]]; then
+    echo "Error: Python venv not found. Please run install_openpose.sh first." >&2
+    exit 1
+fi
+
 if [ "$USE_SLURM" = true ]; then
     CHUNKS_ARG=""
     if [[ -n "$CHUNKS" ]]; then
