@@ -22,7 +22,7 @@ done
 
 if [[ -z "$TYPE" || -z "$INPUT" || -z "$OUTPUT" ]]; then
     echo "Usage: $0 --type <estimator> --input <input_folder> --output <output_folder> [--slurm] [--extra <extra_args>]" >&2
-    echo "Available types: openpose" >&2
+    echo "Available types: openpose, mediapipe" >&2
     exit 1
 fi
 
@@ -39,9 +39,16 @@ case "$TYPE" in
             $SLURM_ARG \
             "${EXTRA[@]}"
         ;;
+    mediapipe)
+        bash $SCRIPT_DIR/estimators/mediapipe/run_mediapipe.sh \
+            --input "$INPUT" \
+            --output "$OUTPUT" \
+            $SLURM_ARG \
+            "${EXTRA[@]}"
+        ;;
     *)
         echo "Unknown estimator type: $TYPE" >&2
-        echo "Available types: openpose" >&2
+        echo "Available types: openpose, mediapipe" >&2
         exit 1
         ;;
 esac

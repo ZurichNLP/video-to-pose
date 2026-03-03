@@ -47,7 +47,7 @@ some_script $SLURM_ARG
 
 - `--slurm` is an optional flag on both `install.sh` and `videos_to_poses.sh`, forwarded to estimator scripts.
 - **Install scripts** must always accept `--slurm`, even if it makes no difference for that estimator (i.e. silently ignored). This keeps the top-level interface uniform.
-- **Run scripts** must fail with a clear error if `--slurm` is passed but no SLURM submission code exists for that estimator. Do not silently ignore it.
+- **Run scripts** must fail with a clear error if `--slurm` is passed but no SLURM submission code exists yet for that estimator. Do not silently ignore it.
 - Some upstream scripts use `$SLURM_SUBMIT_DIR` to locate their own files, so they must be called via `sbatch` from their repo root. Use a subshell to avoid affecting the calling script's working directory:
   ```bash
   (cd $SOME_REPO && sbatch scripts/some_script.sh)

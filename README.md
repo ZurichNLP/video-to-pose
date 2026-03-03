@@ -30,7 +30,7 @@ bash videos_to_poses.sh \
 
 | Parameter |   |
 |----------|---|
-| --type | Which pose estimator to use. Available choices: `openpose`, ...  |
+| --type | Which pose estimator to use. Available choices: `openpose`, `mediapipe`  |
 | --input  | Path to folder of videos  |
 | --output | Path to folder of .pose files  |
 | --extra (optional)   |  Additional arguments passed on to the estimator-specific run script |
@@ -58,8 +58,9 @@ to specify the number of chunks to split the input videos into, and the number o
 ## Pose estimators included
 
 | Estimator  | Exact version, details  | Requirements |
-|----------|---|--------------------------------------|
-| openpose |  137-keypoint model | Singularity CE >= 3.7 or Apptainer, NVIDIA GPU with driver supporting CUDA 11.x |
+|------------|-------------------------|--------------|
+| openpose   | 137-keypoint model | Singularity CE >= 3.7 or Apptainer, NVIDIA GPU with driver supporting CUDA 11.x |
+| mediapipe  | MediaPipe Holistic, model complexity 2, with iris refinement | Python 3 |
 
 ## Details on output pose format
 
