@@ -1,0 +1,20 @@
+name: Tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        estimator: [mediapipe]
+      fail-fast: false
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run ${{ matrix.estimator }} tests
+        run: bash test/test_${{ matrix.estimator }}.sh

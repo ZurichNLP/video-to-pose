@@ -23,24 +23,24 @@ Then to estimate poses for a folder of input videos:
 bash videos_to_poses.sh \
     --type openpose \
     --input /path/to/videos \
-    --output /path/to/poses [--extra] [--slurm]
+    --output /path/to/poses \
+    [--slurm] [...]
 ```
 
 ### Arguments
 
 | Parameter |   |
 |----------|---|
-| --type | Which pose estimator to use. Available choices: `openpose`, ...  |
+| --type | Which pose estimator to use. Available choices: `openpose`, `mediapipe`  |
 | --input  | Path to folder of videos  |
 | --output | Path to folder of .pose files  |
-| --extra (optional)   |  Additional arguments passed on to the estimator-specific run script |
 | --slurm (optional) | Whether to submit estimation jobs to a SLURM queue instead of executing directly  |
+| ... | Any additional named arguments are passed through to the estimator-specific run script |
 
 Installing may also differ if `--slurm` is used, so if you are working on a SLURM cluster, also
 use `--slurm` for the installation script above.
 
-For additional, estimator-specific arguments that can be passed via `--extra`, see the respective estimator's
-README file (in the `estimators` sub-folders).
+For additional, estimator-specific arguments, see the respective estimator's README file (in the `estimators` sub-folders).
 
 For instance, for the `openpose` estimator, if `--slurm` is used, a further argument `--chunks` can be passed like so:
 
@@ -49,8 +49,8 @@ bash videos_to_poses.sh \
     --type openpose \
     --input /path/to/videos \
     --output /path/to/poses \
-    --slurm
-    --extra --chunks 20
+    --slurm \
+    --chunks 20
 ```
 
 to specify the number of chunks to split the input videos into, and the number of resulting jobs to submit.
@@ -58,8 +58,9 @@ to specify the number of chunks to split the input videos into, and the number o
 ## Pose estimators included
 
 | Estimator  | Exact version, details  | Requirements |
-|----------|---|--------------------------------------|
-| openpose |  137-keypoint model | Singularity CE >= 3.7 or Apptainer, NVIDIA GPU with driver supporting CUDA 11.x |
+|------------|-------------------------|--------------|
+| openpose   | 137-keypoint model | Singularity CE >= 3.7 or Apptainer, NVIDIA GPU with driver supporting CUDA 11.x |
+| mediapipe  | MediaPipe Holistic, model complexity 2, with iris refinement | Python 3 |
 
 ## Details on output pose format
 

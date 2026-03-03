@@ -3,7 +3,7 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 
-TEST_VIDEO_URL="https://www.sgb-fss.ch/signsuisse/fileadmin/signsuisse_ressources/videos/262C81F5-FB9D-759D-08E1CB201ADEB239.mp4"
+TEST_VIDEO_URL="https://www.sgb-fss.ch/signsuisse/fileadmin/signsuisse_ressources/videos/262C723C-021E-5B4E-C607E2CE094D1963.mp4"
 DOWNLOADED_VIDEO="$SCRIPT_DIR/data/test_video.mp4"
 INPUT_DIR="$SCRIPT_DIR/data/input"
 
