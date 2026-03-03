@@ -40,7 +40,7 @@ This will:
 - Clone the [openpose-singularity-uzh](https://github.com/bricksdont/openpose-singularity-uzh) repo and build the Singularity container (~10-15 min, first run only)
 - Set up a Python venv (first run only)
 - Run batch pose estimation on the three test videos
-- Run `pytest test/test_pose_shape.py` to validate the output
+- Run the estimator-specific tests in `test/test_pose_shape.py` to validate the output
 
 ### MediaPipe
 
@@ -54,7 +54,7 @@ This will:
 - Download test videos (first run only)
 - Set up a Python venv with `mediapipe` and `pose-format` (first run only)
 - Run batch pose estimation on the three test videos
-- Run `pytest test/test_pose_shape.py` to validate the output
+- Run the estimator-specific tests in `test/test_pose_shape.py` to validate the output
 
 ## Output shape tests
 
@@ -66,7 +66,7 @@ Expected shape of `pose.body.data` — `(frames, people, keypoints, coordinates)
 
 | Dimension   | Expected value | Notes                                             |
 |-------------|----------------|---------------------------------------------------|
-| frames      | 133            | Fixed for the test video                          |
+| frames      | 62             | Fixed for the test video                          |
 | people      | >= 1           | At least one person detected                      |
 | keypoints   | 137            | 25 body + 70 face + 21 left hand + 21 right hand |
 | coordinates | 2              | x, y                                              |
@@ -77,7 +77,7 @@ Expected shape of `pose.body.data` — `(frames, people, keypoints, coordinates)
 
 | Dimension   | Expected value | Notes                                                                        |
 |-------------|----------------|------------------------------------------------------------------------------|
-| frames      | 133            | Fixed for the test video                                                     |
+| frames      | 62             | Fixed for the test video                                                     |
 | people      | 1              | MediaPipe Holistic detects exactly 1 person                                  |
 | keypoints   | 586            | 33 pose + 478 face (with iris) + 21 left hand + 21 right hand + 33 pose world |
 | coordinates | 3              | x, y, z                                                                      |

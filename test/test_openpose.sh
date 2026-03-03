@@ -24,7 +24,7 @@ OPENPOSE_VENV="$REPO_DIR/estimators/tools/openpose/openpose-singularity-uzh/venv
 
 # Test output pose shape
 source "$OPENPOSE_VENV/bin/activate"
-pytest "$SCRIPT_DIR/test_pose_shape.py"
+pytest "$SCRIPT_DIR/test_pose_shape.py::test_openpose_shape"
 deactivate
 
 echo "Test passed."

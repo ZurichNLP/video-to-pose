@@ -24,7 +24,7 @@ MEDIAPIPE_VENV="$REPO_DIR/estimators/tools/mediapipe/venv"
 
 # Test output pose shape
 source "$MEDIAPIPE_VENV/bin/activate"
-pytest "$SCRIPT_DIR/test_pose_shape.py"
+pytest "$SCRIPT_DIR/test_pose_shape.py::test_mediapipe_shape"
 deactivate
 
 echo "Test passed."

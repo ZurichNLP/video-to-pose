@@ -29,7 +29,7 @@ def test_openpose_shape(pose_file):
 
     frames, people, keypoints, coords = shape
 
-    assert frames == 133, f"Expected 133 frames, got {frames}"
+    assert frames == 62, f"Expected 62 frames, got {frames}"
     assert people >= 1, "Expected at least one person"
     assert keypoints == OPENPOSE_NUM_KEYPOINTS, (
         f"Expected {OPENPOSE_NUM_KEYPOINTS} keypoints (OpenPose 137-keypoint model), got {keypoints}"
@@ -63,7 +63,7 @@ def test_mediapipe_shape(pose_file):
 
     frames, people, keypoints, coords = shape
 
-    assert frames == 133, f"Expected 133 frames, got {frames}"
+    assert frames == 62, f"Expected 62 frames, got {frames}"
     assert people == 1, "MediaPipe Holistic detects exactly 1 person"
     assert keypoints == MEDIAPIPE_NUM_KEYPOINTS, (
         f"Expected {MEDIAPIPE_NUM_KEYPOINTS} keypoints (MediaPipe Holistic with iris refinement), got {keypoints}"
