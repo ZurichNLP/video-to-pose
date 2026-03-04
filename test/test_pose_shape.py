@@ -71,3 +71,37 @@ def test_mediapipe_shape(pose_file):
     assert coords == MEDIAPIPE_NUM_COORDS, (
         f"Expected {MEDIAPIPE_NUM_COORDS} coordinates (x, y, z), got {coords}"
     )
+
+
+# ── MMPose WholeBody ───────────────────────────────────────────────────────────
+
+MMPOSEWHOLEBODY_OUTPUT_DIR = os.path.join(TEST_DIR, "data", "output", "mmposewholebody")
+# 23 body + 68 face + 21 left hand + 21 right hand
+MMPOSEWHOLEBODY_NUM_KEYPOINTS = 133
+MMPOSEWHOLEBODY_NUM_COORDS = 2  # x, y
+
+
+def get_mmposewholebody_files():
+    return glob.glob(os.path.join(MMPOSEWHOLEBODY_OUTPUT_DIR, "**", "*.pose"), recursive=True)
+
+
+@pytest.mark.parametrize("pose_file", get_mmposewholebody_files())
+def test_mmposewholebody_shape(pose_file):
+    with open(pose_file, "rb") as f:
+        pose = Pose.read(f.read())
+
+    # shape: (frames, people, keypoints, coordinates)
+    shape = pose.body.data.shape
+
+    assert len(shape) == 4, f"Expected 4 dimensions, got {len(shape)}"
+
+    frames, people, keypoints, coords = shape
+
+    assert frames == 62, f"Expected 62 frames, got {frames}"
+    assert people >= 1, "Expected at least one person"
+    assert keypoints == MMPOSEWHOLEBODY_NUM_KEYPOINTS, (
+        f"Expected {MMPOSEWHOLEBODY_NUM_KEYPOINTS} keypoints (MMPose WholeBody 133-keypoint model), got {keypoints}"
+    )
+    assert coords == MMPOSEWHOLEBODY_NUM_COORDS, (
+        f"Expected {MMPOSEWHOLEBODY_NUM_COORDS} coordinates (x, y), got {coords}"
+    )

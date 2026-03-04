@@ -1,0 +1,5 @@
+opencv-python-headless
+numpy<2
+setuptools<71
+tqdm
+psutil
