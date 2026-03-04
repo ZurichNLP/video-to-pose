@@ -27,7 +27,25 @@ if [ -d "$VENV_DIR" ]; then
 fi
 
 echo "Creating Python virtual environment at $VENV_DIR ..."
-python3 -m venv "$VENV_DIR"
+# mediapipe<0.10.30 has no macOS wheels for Python 3.12+, so on macOS we need 3.11 or 3.10.
+# On Linux, Python 3.12 has wheels available, so we use whatever python3 is.
+PYTHON="python3"
+if [[ "$(uname -s)" == "Darwin" ]]; then
+    PYTHON=""
+    for candidate in python3.11 python3.10; do
+        if command -v "$candidate" &>/dev/null; then
+            PYTHON="$candidate"
+            break
+        fi
+    done
+    if [[ -z "$PYTHON" ]]; then
+        echo "Error: Python 3.11 or 3.10 is required on macOS (mediapipe<0.10.30 has no macOS wheels for Python 3.12+)." >&2
+        echo "Install with: brew install python@3.11" >&2
+        exit 1
+    fi
+fi
+echo "Using $PYTHON"
+"$PYTHON" -m venv "$VENV_DIR"
 
 echo "Installing dependencies ..."
 "$VENV_DIR/bin/pip" install --no-cache-dir --upgrade pip
