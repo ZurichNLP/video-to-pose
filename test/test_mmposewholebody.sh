@@ -10,8 +10,17 @@ OUTPUT_DIR="$SCRIPT_DIR/data/output/mmposewholebody"
 # Download test data if not already present
 bash "$SCRIPT_DIR/download_test_data.sh"
 
+# Parse command line arguments
+USE_SLURM=""
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --slurm) USE_SLURM="--slurm"; shift ;;
+        *) echo "Unknown argument: $1" >&2; exit 1 ;;
+    esac
+done
+
 # Install mmposewholebody
-bash "$REPO_DIR/install.sh" --type mmposewholebody
+bash "$REPO_DIR/install.sh" --type mmposewholebody $USE_SLURM
 
 # Run pose estimation
 mkdir -p "$OUTPUT_DIR"

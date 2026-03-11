@@ -1,5 +1,8 @@
+torch
 opencv-python-headless
-numpy<2
 setuptools<71
 tqdm
 psutil
+openmim
+numpy<2
+pytest
