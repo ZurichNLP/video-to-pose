@@ -28,7 +28,7 @@ done
 
 if [[ -z "$TYPE" || -z "$INPUT" || -z "$OUTPUT" ]]; then
     echo "Usage: $0 --type <estimator> --input <input_folder> --output <output_folder> [--slurm] [...]" >&2
-    echo "Available types: openpose, mediapipe" >&2
+    echo "Available types: openpose, mediapipe, sdpose" >&2
     exit 1
 fi
 
@@ -45,9 +45,15 @@ case "$TYPE" in
             --output "$OUTPUT" \
             "${PASSTHROUGH[@]}"
         ;;
+    sdpose)
+        bash $SCRIPT_DIR/estimators/sdpose/run_sdpose.sh \
+            --input "$INPUT" \
+            --output "$OUTPUT" \
+            "${PASSTHROUGH[@]}"
+        ;;
     *)
         echo "Unknown estimator type: $TYPE" >&2
-        echo "Available types: openpose, mediapipe" >&2
+        echo "Available types: openpose, mediapipe, sdpose" >&2
         exit 1
         ;;
 esac

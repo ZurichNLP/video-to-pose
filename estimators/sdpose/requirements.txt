@@ -1,0 +1,8 @@
+opencv-python
+psutil
+torch
+matplotlib
+torchvision
+diffusers
+transformers
+munkres
