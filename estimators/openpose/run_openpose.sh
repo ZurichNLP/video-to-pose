@@ -9,16 +9,23 @@ USE_SLURM=false
 INPUT=""
 OUTPUT=""
 CHUNKS=""
+DEVICE=""
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
-        --slurm) USE_SLURM=true; shift ;;
-        --input) INPUT="$2"; shift 2 ;;
+        --slurm)  USE_SLURM=true; shift ;;
+        --input)  INPUT="$2"; shift 2 ;;
         --output) OUTPUT="$2"; shift 2 ;;
         --chunks) CHUNKS="$2"; shift 2 ;;
+        --device) DEVICE="$2"; shift 2 ;;
         *) echo "Unknown argument: $1" >&2; exit 1 ;;
     esac
 done
+
+if [[ "$DEVICE" == "cpu" ]]; then
+    echo "Error: openpose does not support CPU. Use --device gpu or omit --device." >&2
+    exit 1
+fi
 
 if [[ -n "$CHUNKS" && "$USE_SLURM" = false ]]; then
     echo "--chunks requires --slurm" >&2

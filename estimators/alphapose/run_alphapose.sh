@@ -11,6 +11,7 @@ OUTPUT=""
 CHUNKS=""
 KEYPOINTS=""
 LOWPRIO=false
+DEVICE=""
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
@@ -20,9 +21,15 @@ while [[ $# -gt 0 ]]; do
         --chunks)    CHUNKS="$2"; shift 2 ;;
         --keypoints) KEYPOINTS="$2"; shift 2 ;;
         --lowprio)   LOWPRIO=true; shift ;;
+        --device)    DEVICE="$2"; shift 2 ;;
         *) echo "Unknown argument: $1" >&2; exit 1 ;;
     esac
 done
+
+if [[ "$DEVICE" == "cpu" ]]; then
+    echo "Error: alphapose does not support CPU. Use --device gpu or omit --device." >&2
+    exit 1
+fi
 
 if [[ -n "$CHUNKS" && "$USE_SLURM" = false ]]; then
     echo "--chunks requires --slurm" >&2
