@@ -27,7 +27,17 @@ TOOLS=$REPO_DIR/tools
 
 **Argument parsing** — use a `while [[ $# -gt 0 ]]` loop with `case`/`shift 2` for key-value args and `shift` for flags. Reject unknown arguments with `exit 1`.
 
-**Passing through unknown args** — `videos_to_poses.sh` consumes only `--type`, `--input`, `--output` and collects everything else into a `PASSTHROUGH` array, which is forwarded verbatim to the estimator script. For each unknown `--flag`, the next token is also captured if it does not start with `--` (i.e. it is a value):
+**Forwarding a known optional arg as an array** — for optional named args that must be forwarded explicitly (not via PASSTHROUGH), build an array and expand it:
+```bash
+DEVICE_ARG=()
+if [[ -n "$DEVICE" ]]; then
+    DEVICE_ARG=(--device "$DEVICE")
+fi
+some_script "${DEVICE_ARG[@]}"
+```
+This avoids quoting issues and works correctly when the arg is absent (empty array expands to nothing).
+
+**Passing through unknown args** — `videos_to_poses.sh` consumes only `--type`, `--input`, `--output`, `--device` and collects everything else into a `PASSTHROUGH` array, which is forwarded verbatim to the estimator script. For each unknown `--flag`, the next token is also captured if it does not start with `--` (i.e. it is a value):
 ```bash
 PASSTHROUGH=()
 --*)
@@ -50,6 +60,31 @@ SLURM_ARG=""
 if [ "$USE_SLURM" = true ]; then SLURM_ARG="--slurm"; fi
 some_script $SLURM_ARG
 ```
+
+## Device support
+
+- `videos_to_poses.sh` accepts `--device cpu|gpu` (optional), validates the value, and passes it explicitly to the estimator script via a `DEVICE_ARG` array.
+- Each estimator run script accepts `--device` and fails immediately if the requested device is unsupported:
+  - GPU-only estimators (openpose, alphapose): fail if `--device cpu`
+  - CPU-only estimators (mediapipe): fail if `--device gpu`
+  - Estimators that support both: accept any value without failing
+- The device check should appear right after argument parsing, before any pre-flight checks. This ensures it fails fast and cleanly even when the estimator is not installed.
+
+## Testing: asserting a command fails
+
+To assert that a script exits non-zero in a bash test (useful for validation tests):
+```bash
+assert_fails() {
+    local description="$1"
+    shift
+    if bash "$@" 2>/dev/null; then
+        echo "FAIL: expected failure but succeeded: $description" >&2
+        exit 1
+    fi
+    echo "OK: $description"
+}
+```
+Validation tests (argument rejection, device/estimator mismatches) require no install or data download, so they can run as a standalone CI job with no dependencies.
 
 ## SLURM conventions
 
