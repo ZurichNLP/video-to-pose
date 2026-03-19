@@ -26,11 +26,33 @@ if [ -d "$VENV_DIR" ]; then
 fi
 
 if [ "$USE_SLURM" = true ]; then
-    echo "Error: --slurm is not yet supported for sdpose installation." >&2
-    exit 1
-else
-    echo "Creating virtual environment at $VENV_DIR ..."
-    python3.10 -m venv "$VENV_DIR"
+    BOOTSTRAP_ENV="$SDPOSE_TOOLS_DIR/bootstrap_python3.10"
+    source "$(conda info --base)/etc/profile.d/conda.sh"
+
+    echo "Loading miniforge3 module for SLURM..."
+    module load miniforge3 2>/dev/null || echo "Warning: miniforge3 module not found"
+    module load cuda/12.9.1 2>/dev/null || echo "Warning: cuda module not found"
+
+    # Create bootstrap env if it does not exist
+    if [[ ! -x "$BOOTSTRAP_ENV/bin/python" ]]; then
+        echo "The cluster's miniforge3 module has only python3.12, and sdpose works best with python3.10"
+        echo "Creating temporary Python 3.10 conda environment in which to build the venv..."
+        conda create -y --prefix "$BOOTSTRAP_ENV" python=3.10 || exit 1
+        echo "Conda environment with python=3.10 successfully created at $BOOTSTRAP_ENV"
+    fi
+
+    echo "Activating the conda environment..."
+    conda activate $SDPOSE_TOOLS_DIR/bootstrap_python3.10
+fi 
+
+echo "Creating virtual environment at $VENV_DIR ..."
+python3.10 -m venv "$VENV_DIR"
+
+if [[ "$USE_SLURM" == "true" ]]; then
+    echo "Deactivating conda environment..."
+    conda deactivate
+    #echo "Removing the temporary conda environment used for bootstrapping..."
+    #conda remove --prefix "$BOOTSTRAP_ENV" --all -y
 fi
 
 
@@ -38,6 +60,8 @@ fi
 
 echo "Installing base requirements ..."
 "$VENV_DIR/bin/pip" install --no-cache-dir -r "$SDPOSE_DIR/requirements.txt"
+
+"$VENV_DIR/bin/pip" install "numpy==1.26.4" --force-reinstall
 
 echo "Cloning pose-format fork (new_estimators branch) ..."
 POSE_REPO="$SDPOSE_TOOLS_DIR/pose"

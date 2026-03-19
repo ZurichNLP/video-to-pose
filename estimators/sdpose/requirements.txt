@@ -6,3 +6,9 @@ torchvision
 diffusers
 transformers
 munkres
+pandas
+xtcocotools
+mmcv-lite
+ultralytics
+accelerate
+pytest
