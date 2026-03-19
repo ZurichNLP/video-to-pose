@@ -24,7 +24,7 @@ bash videos_to_poses.sh \
     --type openpose \
     --input /path/to/videos \
     --output /path/to/poses \
-    [--slurm] [...]
+    [--device cpu|gpu] [--slurm] [...]
 ```
 
 ### Arguments
