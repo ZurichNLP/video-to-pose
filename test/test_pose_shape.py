@@ -39,6 +39,39 @@ def test_openpose_shape(pose_file):
     )
 
 
+# ── AlphaPose ─────────────────────────────────────────────────────────────────
+
+ALPHAPOSE_OUTPUT_DIR = os.path.join(TEST_DIR, "data", "output", "alphapose")
+ALPHAPOSE_NUM_KEYPOINTS = 136  # HALPE_136 whole-body model
+ALPHAPOSE_NUM_COORDS = 2  # x, y
+
+
+def get_alphapose_files():
+    return glob.glob(os.path.join(ALPHAPOSE_OUTPUT_DIR, "**", "*.pose"), recursive=True)
+
+
+@pytest.mark.parametrize("pose_file", get_alphapose_files())
+def test_alphapose_shape(pose_file):
+    with open(pose_file, "rb") as f:
+        pose = Pose.read(f.read())
+
+    # shape: (frames, people, keypoints, coordinates)
+    shape = pose.body.data.shape
+
+    assert len(shape) == 4, f"Expected 4 dimensions, got {len(shape)}"
+
+    frames, people, keypoints, coords = shape
+
+    assert frames == 62, f"Expected 62 frames, got {frames}"
+    assert people >= 1, "Expected at least one person"
+    assert keypoints == ALPHAPOSE_NUM_KEYPOINTS, (
+        f"Expected {ALPHAPOSE_NUM_KEYPOINTS} keypoints (AlphaPose HALPE_136 model), got {keypoints}"
+    )
+    assert coords == ALPHAPOSE_NUM_COORDS, (
+        f"Expected {ALPHAPOSE_NUM_COORDS} coordinates (x, y), got {coords}"
+    )
+
+
 # ── MediaPipe ─────────────────────────────────────────────────────────────────
 
 MEDIAPIPE_OUTPUT_DIR = os.path.join(TEST_DIR, "data", "output", "mediapipe")

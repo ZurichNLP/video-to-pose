@@ -31,7 +31,7 @@ bash videos_to_poses.sh \
 
 | Parameter |   |
 |----------|---|
-| --type | Which pose estimator to use. Available choices: `openpose`, `mediapipe`  |
+| --type | Which pose estimator to use. Available choices: `openpose`, `mediapipe`, `alphapose`  |
 | --input  | Path to folder of videos  |
 | --output | Path to folder of .pose files  |
 | --slurm (optional) | Whether to submit estimation jobs to a SLURM queue instead of executing directly  |
@@ -59,8 +59,9 @@ to specify the number of chunks to split the input videos into, and the number o
 
 | Estimator  | Exact version, details  | Requirements |
 |------------|-------------------------|--------------|
-| openpose   | 137-keypoint model | Singularity CE >= 3.7 or Apptainer, NVIDIA GPU with driver supporting CUDA 11.x |
+| openpose   | 137-keypoint model | Singularity CE >= 3.x or Apptainer >= 1.x, NVIDIA GPU with CUDA drivers |
 | mediapipe  | MediaPipe Holistic, model complexity 2, with iris refinement | Python 3 |
+| alphapose  | 136-keypoint HALPE_136 whole-body model (default), or 133-keypoint COCO WholeBody | Singularity CE >= 3.x or Apptainer >= 1.x, NVIDIA GPU with CUDA drivers |
 
 ## Details on output pose format
 
