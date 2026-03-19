@@ -6,6 +6,8 @@ Additional arguments specific to MediaPipe that can be passed directly to the ma
 
 `--num-workers`: number of parallel workers for processing videos. Defaults to 1.
 
+`--device`: only `cpu` is supported. Passing `--device gpu` will fail with an error.
+
 ## Model and code details
 
 The MediaPipe Holistic model is used, producing **586 keypoints** in total across 5 components:

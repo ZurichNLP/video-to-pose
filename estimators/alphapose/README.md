@@ -10,6 +10,8 @@ Additional arguments specific to AlphaPose that can be passed directly to the ma
 
 `--lowprio`: submit SLURM jobs to a low-priority partition. Only allowed together with `--slurm`.
 
+`--device`: only `gpu` is supported. Passing `--device cpu` will fail with an error.
+
 ## Model and code details
 
 The default model is the 136-keypoint HALPE_136 whole-body model (Multi-domain DCN Combined, trained on HALPE and COCO WholeBody), covering body, face, hands, and feet. A 133-keypoint COCO WholeBody variant can be selected via `--keypoints 133`.

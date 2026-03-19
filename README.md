@@ -34,6 +34,7 @@ bash videos_to_poses.sh \
 | --type | Which pose estimator to use. Available choices: `openpose`, `mediapipe`, `alphapose`  |
 | --input  | Path to folder of videos  |
 | --output | Path to folder of .pose files  |
+| --device (optional) | `cpu` or `gpu`. Not all estimators support both; unsupported combinations will fail with a clear error. |
 | --slurm (optional) | Whether to submit estimation jobs to a SLURM queue instead of executing directly  |
 | ... | Any additional named arguments are passed through to the estimator-specific run script |
 
