@@ -20,8 +20,8 @@ uses a pre-built docker image for OpenPose, based on the original OpenPose sourc
 
 ## Requirements
 
-- Singularity CE >= 3.7 or Apptainer
-- NVIDIA GPU with driver supporting CUDA 11.x
+- Singularity CE >= 3.x or Apptainer >= 1.x
+- NVIDIA GPU with CUDA drivers
 
 OpenPose requires a GPU to run. Making it run on CPU is not possible with reasonable effort in our
 experience, and will be very slow.

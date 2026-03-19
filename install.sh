@@ -16,7 +16,7 @@ done
 
 if [[ -z "$TYPE" ]]; then
     echo "Usage: $0 --type <estimator> [--slurm]" >&2
-    echo "Available types: openpose, mediapipe" >&2
+    echo "Available types: openpose, mediapipe, alphapose" >&2
     exit 1
 fi
 
@@ -32,9 +32,12 @@ case "$TYPE" in
     mediapipe)
         bash $SCRIPT_DIR/estimators/mediapipe/install_mediapipe.sh $SLURM_ARG
         ;;
+    alphapose)
+        bash $SCRIPT_DIR/estimators/alphapose/install_alphapose.sh $SLURM_ARG
+        ;;
     *)
         echo "Unknown estimator type: $TYPE" >&2
-        echo "Available types: openpose, mediapipe" >&2
+        echo "Available types: openpose, mediapipe, alphapose" >&2
         exit 1
         ;;
 esac

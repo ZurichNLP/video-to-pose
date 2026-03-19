@@ -72,6 +72,20 @@ pip install -r requirements.txt
 ```
 The venv should live inside `tools/<estimator name>/` alongside any other installed artifacts.
 
+## alphapose estimator
+
+- Upstream repo: https://github.com/bricksdont/alphapose-singularity-uzh
+- Cloned to: `$TOOLS/alphapose/alphapose-singularity-uzh`
+- Install produces four artifacts (all inside the cloned repo):
+  - The cloned repo directory itself
+  - `alphapose.sif` — Singularity container image (~8 GB, pulled from ghcr)
+  - `venv/` — Python virtual environment
+  - `data/models/` — model weights
+- Container is pulled with `singularity/apptainer pull` (not built); `install_alphapose.sh` detects whichever of `apptainer` or `singularity` is available.
+- `slurm_build_container.sh` uses `$SLURM_SUBMIT_DIR` → must be submitted via `(cd repo && sbatch ...)`.
+- `setup_venv.sh`, `download_models.sh`, `batch_to_pose.sh`, `slurm_submit.sh` all self-locate → no `cd` needed.
+- alphapose-specific arguments: `--chunks N` and `--lowprio` (both only valid with `--slurm`); `--keypoints 136|133` (valid with or without `--slurm`).
+
 ## openpose estimator
 
 - Upstream repo: https://github.com/bricksdont/openpose-singularity-uzh
