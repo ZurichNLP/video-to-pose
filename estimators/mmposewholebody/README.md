@@ -2,7 +2,7 @@
 
 ## Estimator-specific arguments
 
-`--use-cpu`: run inference on CPU instead of GPU (slow; use only if no GPU is available).
+`--device cpu|gpu`: device to use for inference (default: `cpu` on macOS, `gpu` elsewhere). CPU is slow; use only if no GPU is available.
 
 ## Model and code details
 
