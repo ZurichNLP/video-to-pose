@@ -42,7 +42,6 @@ fi
 
 # Load miniforge3 module if on the cluster (required for venv)
 if [[ "$USE_SLURM" == "true" ]]; then
-
     BOOTSTRAP_ENV="$MMPOSE_TOOLS_DIR/bootstrap_python3.8"
     source "$(conda info --base)/etc/profile.d/conda.sh"
 
@@ -59,32 +58,19 @@ if [[ "$USE_SLURM" == "true" ]]; then
 
     echo "Activating the conda environment..."
     conda activate $MMPOSE_TOOLS_DIR/bootstrap_python3.8
-fi 
-
-echo "Creating python3.8 venv at $VENV_DIR ..."
-python -m venv $VENV_DIR
-
-if [[ "$USE_SLURM" == "true" ]]; then
-
+    echo "Creating venv at $VENV_DIR ..."
+    python -m venv $VENV_DIR
     echo "Deactivating conda environment..."
     conda deactivate
     #echo "Removing the temporary conda environment used for bootstrapping..."
     #conda remove --prefix "$BOOTSTRAP_ENV" --all -y
+else
+    echo "Creating venv at $VENV_DIR ..."
+    python3.10 -m venv $VENV_DIR
 fi
 
 echo "Activating the venv..."
 source $VENV_DIR/bin/activate
-
-"$VENV_DIR/bin/python" -m pip install --upgrade --no-cache-dir pip setuptools wheel
-
-echo "Installing base requirements ..."
-"$VENV_DIR/bin/pip" install --no-cache-dir -r "$MMPOSEWHOLEBODY_DIR/requirements.txt"
-
-"$VENV_DIR/bin/pip" install --no-build-isolation chumpy
-mim install mmengine
-mim install "mmcv==2.1.0"
-mim install mmdet
-mim install --no-build-isolation mmpose
 
 echo "Cloning pose-format fork (new_estimators branch) ..."
 POSE_REPO="$MMPOSE_TOOLS_DIR/pose"
@@ -93,7 +79,36 @@ if [ -d "$POSE_REPO" ]; then
 else
     git clone -b new_estimators https://github.com/catherine-o-brien/pose.git "$POSE_REPO"
 fi
-"$VENV_DIR/bin/pip" install --no-cache-dir -e "$POSE_REPO/src/python"
+"$VENV_DIR/bin/pip" install --no-cache-dir "$POSE_REPO/src/python"
+
+echo "Installing torch and torchvision ..."
+# Versions pinned to match the known-working conda environment (torch 2.1.0+cu118).
+if [[ "$USE_GPU" == "true" ]]; then
+    "$VENV_DIR/bin/pip" install --no-cache-dir \
+        "torch==2.1.0" "torchvision==0.16.0" \
+        --index-url https://download.pytorch.org/whl/cu118
+else
+    "$VENV_DIR/bin/pip" install --no-cache-dir \
+        "torch==2.1.0" "torchvision==0.16.0"
+fi
+"$VENV_DIR/bin/pip" install --no-cache-dir -r "$MMPOSEWHOLEBODY_DIR/requirements.txt"
+
+echo "Installing OpenMMLab packages ..."
+"$VENV_DIR/bin/pip" install --no-cache-dir openmim
+"$VENV_DIR/bin/pip" install --no-cache-dir "mmengine==0.10.7"
+
+# mmcv must come from the OpenMMLab find-links page — PyPI only has a source dist which
+# fails to compile. --no-index prevents pip falling back to that source dist.
+if [[ "$USE_GPU" == "true" ]]; then
+    "$VENV_DIR/bin/pip" install --no-cache-dir --no-index "mmcv==2.1.0" \
+        -f https://download.openmmlab.com/mmcv/dist/cu118/torch2.1/index.html
+else
+    "$VENV_DIR/bin/pip" install --no-cache-dir --no-index "mmcv==2.1.0" \
+        -f https://download.openmmlab.com/mmcv/dist/cpu/torch2.1/index.html
+fi
+
+"$VENV_DIR/bin/pip" install --no-cache-dir "mmdet==3.3.0"
+"$VENV_DIR/bin/pip" install --no-cache-dir "mmpose==1.3.2"
 
 echo
 echo "=== Setup complete ==="
