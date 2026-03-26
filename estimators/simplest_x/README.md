@@ -10,13 +10,18 @@ Additional arguments specific to SMPLest-X that can be passed directly to the ma
 
 The SMPLest-X-H (huge) model is used, producing **139 keypoints** in total across 4 components:
 
-| Component             | Keypoints |
-|-----------------------|-----------|
-| Body joints           | 25        |
-| Left hand joints      | 21        |
-| Right hand joints     | 21        |
-| Face landmarks        | 72        |
-| **Total**             | **139**   |
+| Component                    | Keypoints |
+|------------------------------|-----------|
+| Body joints                  | 25        |
+| Left hand joints             | 21        |
+| Right hand joints            | 21        |
+| Face landmarks               | 72        |
+| **Total**                    | **139**   |
+
+The raw SMPLest-X model outputs 137 keypoints. The pose-format conversion adds 2 extra wrist
+root joints (`L_Wrist_Hand` and `R_Wrist_Hand`) via `build_smplx_with_hand_wrists()`, bringing
+the total to 139. These duplicated wrist keypoints are a pose-format convention to anchor each
+hand component to the body skeleton.
 
 Each keypoint has 2 coordinates (x, y) in image space. Only 1 person is detected per frame.
 
