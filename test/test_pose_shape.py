@@ -104,3 +104,38 @@ def test_mediapipe_shape(pose_file):
     assert coords == MEDIAPIPE_NUM_COORDS, (
         f"Expected {MEDIAPIPE_NUM_COORDS} coordinates (x, y, z), got {coords}"
     )
+
+
+# ── SMPLest-X ─────────────────────────────────────────────────────────────────
+
+SMPLEST_X_OUTPUT_DIR = os.path.join(TEST_DIR, "data", "output", "simplest_x")
+# 25 body + 21 left hand + 21 right hand + 72 face
+# (20 hand joints + 1 wrist root per hand, added by load_smplestx_pose)
+SMPLEST_X_NUM_KEYPOINTS = 139
+SMPLEST_X_NUM_COORDS = 2  # x, y
+
+
+def get_smplest_x_files():
+    return glob.glob(os.path.join(SMPLEST_X_OUTPUT_DIR, "**", "*.pose"), recursive=True)
+
+
+@pytest.mark.parametrize("pose_file", get_smplest_x_files())
+def test_simplest_x_shape(pose_file):
+    with open(pose_file, "rb") as f:
+        pose = Pose.read(f.read())
+
+    # shape: (frames, people, keypoints, coordinates)
+    shape = pose.body.data.shape
+
+    assert len(shape) == 4, f"Expected 4 dimensions, got {len(shape)}"
+
+    frames, people, keypoints, coords = shape
+
+    assert frames == 62, f"Expected 62 frames, got {frames}"
+    assert people == 1, "SMPLest-X detects exactly 1 person"
+    assert keypoints == SMPLEST_X_NUM_KEYPOINTS, (
+        f"Expected {SMPLEST_X_NUM_KEYPOINTS} keypoints (Extended SMPL-X with wrist roots), got {keypoints}"
+    )
+    assert coords == SMPLEST_X_NUM_COORDS, (
+        f"Expected {SMPLEST_X_NUM_COORDS} coordinates (x, y), got {coords}"
+    )
