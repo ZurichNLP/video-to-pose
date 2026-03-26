@@ -31,7 +31,7 @@ bash videos_to_poses.sh \
 
 | Parameter |   |
 |----------|---|
-| --type | Which pose estimator to use. Available choices: `openpose`, `mediapipe`, `alphapose`  |
+| --type | Which pose estimator to use. Available choices: `openpose`, `mediapipe`, `alphapose`, `simplest_x`  |
 | --input  | Path to folder of videos  |
 | --output | Path to folder of .pose files  |
 | --device (optional) | `cpu` or `gpu`. Not all estimators support both; unsupported combinations will fail with a clear error. |
@@ -63,6 +63,7 @@ to specify the number of chunks to split the input videos into, and the number o
 | openpose   | 137-keypoint model | Singularity CE >= 3.x or Apptainer >= 1.x, NVIDIA GPU with CUDA drivers |
 | mediapipe  | MediaPipe Holistic, model complexity 2, with iris refinement | Python 3 |
 | alphapose  | 136-keypoint HALPE_136 whole-body model (default), or 133-keypoint COCO WholeBody | Singularity CE >= 3.x or Apptainer >= 1.x, NVIDIA GPU with CUDA drivers |
+| simplest_x | SMPLest-X-H, 139-keypoint Extended SMPL-X whole-body model (25 body + 21L/21R hand + 72 face + 2 duplicated wrist roots) | Python 3, NVIDIA GPU with CUDA drivers |
 
 ## Details on output pose format
 
