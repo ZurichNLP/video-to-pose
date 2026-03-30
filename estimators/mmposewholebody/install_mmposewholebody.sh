@@ -128,6 +128,12 @@ fi
 "$VENV_DIR/bin/pip" install --no-cache-dir "mmdet==3.3.0"
 "$VENV_DIR/bin/pip" install --no-cache-dir "mmpose==1.3.2"
 
+# openmim's dependency chain (opendatalab → openxlab) pins setuptools~=60.2.0,
+# whose pkg_resources uses pkgutil.ImpImporter (removed in Python 3.12).
+# Some packages also pull in numpy 2.x, which is ABI-incompatible with modules
+# compiled against numpy 1.x.  Re-install compatible versions as the final step.
+"$VENV_DIR/bin/pip" install --no-cache-dir "setuptools<71" "numpy<2"
+
 echo
 echo "=== Setup complete ==="
 echo "Activate with: source $VENV_DIR/bin/activate"
