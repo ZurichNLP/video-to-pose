@@ -18,7 +18,9 @@ mkdir -p $TOOLS/openpose
 
 OPENPOSE_SINGULARITY_DIR=$TOOLS/openpose/openpose-singularity-uzh
 
-git clone https://github.com/bricksdont/openpose-singularity-uzh $OPENPOSE_SINGULARITY_DIR
+if [[ ! -d "$OPENPOSE_SINGULARITY_DIR" ]]; then
+    git clone https://github.com/bricksdont/openpose-singularity-uzh $OPENPOSE_SINGULARITY_DIR
+fi
 
 # steps taken from here: https://github.com/bricksdont/openpose-singularity-uzh/tree/main
 

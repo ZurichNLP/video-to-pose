@@ -9,6 +9,9 @@ Tests are organised per estimator. Each estimator has a dedicated shell script (
 3. Runs pose estimation via the top-level `videos_to_poses.sh`
 4. Activates the estimator's Python venv and runs pytest to validate the output
 
+The Github CI will only run tests that do not require GPU access, so in that case some estimators will
+be skipped.
+
 ## Test data
 
 Test data is managed by `download_test_data.sh`, which downloads a single test video and copies it three times into `data/input/`:
@@ -29,7 +32,7 @@ Estimator output is written to `data/output/<estimator_name>/`, keeping results 
 
 ### OpenPose
 
-**Requirements:** Apptainer or Singularity CE >= 3.7, NVIDIA GPU with CUDA 11.x driver.
+**Requirements:** Singularity CE >= 3.x or Apptainer >= 1.x, NVIDIA GPU with CUDA drivers.
 
 ```bash
 bash test/test_openpose.sh
@@ -39,6 +42,20 @@ This will:
 - Download test videos (first run only)
 - Clone the [openpose-singularity-uzh](https://github.com/bricksdont/openpose-singularity-uzh) repo and build the Singularity container (~10-15 min, first run only)
 - Set up a Python venv (first run only)
+- Run batch pose estimation on the three test videos
+- Run the estimator-specific tests in `test/test_pose_shape.py` to validate the output
+
+### AlphaPose
+
+**Requirements:** Singularity CE >= 3.x or Apptainer >= 1.x, NVIDIA GPU with CUDA drivers. Not run on GitHub CI.
+
+```bash
+bash test/test_alphapose.sh
+```
+
+This will:
+- Download test videos (first run only)
+- Clone the [alphapose-singularity-uzh](https://github.com/bricksdont/alphapose-singularity-uzh) repo, pull the Singularity container (~8 GB, first run only), set up a Python venv, and download model weights (first run only)
 - Run batch pose estimation on the three test videos
 - Run the estimator-specific tests in `test/test_pose_shape.py` to validate the output
 
@@ -70,6 +87,17 @@ Expected shape of `pose.body.data` — `(frames, people, keypoints, coordinates)
 | people      | >= 1           | At least one person detected                      |
 | keypoints   | 137            | 25 body + 70 face + 21 left hand + 21 right hand |
 | coordinates | 2              | x, y                                              |
+
+### AlphaPose
+
+Expected shape of `pose.body.data` — `(frames, people, keypoints, coordinates)`:
+
+| Dimension   | Expected value | Notes                        |
+|-------------|----------------|------------------------------|
+| frames      | 62             | Fixed for the test video     |
+| people      | >= 1           | At least one person detected |
+| keypoints   | 136            | HALPE_136 whole-body model   |
+| coordinates | 2              | x, y                         |
 
 ### MediaPipe
 
