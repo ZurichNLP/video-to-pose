@@ -17,7 +17,7 @@ jobs:
 
     strategy:
       matrix:
-        estimator: [mediapipe]
+        estimator: [mediapipe, mmposewholebody]
       fail-fast: false
 
     steps:
