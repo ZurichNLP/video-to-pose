@@ -66,7 +66,7 @@ if [[ "$USE_SLURM" == "true" ]]; then
     #conda remove --prefix "$BOOTSTRAP_ENV" --all -y
 else
     echo "Creating venv at $VENV_DIR ..."
-    python3.10 -m venv $VENV_DIR
+    python -m venv $VENV_DIR
 fi
 
 echo "Activating the venv..."
