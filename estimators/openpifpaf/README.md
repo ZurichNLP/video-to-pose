@@ -33,5 +33,5 @@ Due to its dependency on `torchvision<0.15`, OpenPifPaf is only compatible with 
 
 - The model checkpoint (`shufflenetv2k30-wholebody`, ~100 MB) is downloaded
   automatically on first run and cached in `~/.cache/torch/hub/checkpoints/`.
-- For GPU inference on Linux, install a CUDA-enabled torch before running:
-  `pip install torch torchvision --index-url https://download.pytorch.org/whl/cu118`
+- The install script auto-detects GPU availability via `nvidia-smi` and installs
+  CUDA-enabled or CPU-only torch accordingly.

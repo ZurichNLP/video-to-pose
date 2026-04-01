@@ -15,6 +15,21 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
+if [[ "$USE_SLURM" == "true" ]]; then
+    echo "Loading miniforge3 module for SLURM..."
+    module load miniforge3 2>/dev/null || echo "Warning: miniforge3 module not found"
+fi
+
+# Check if a GPU is available
+if command -v nvidia-smi &>/dev/null && nvidia-smi -L &>/dev/null; then
+    echo "GPU detected, using CUDA"
+    module load cuda/12.6.3 2>/dev/null || echo "CUDA module not found. You may need to specify the correct module syntax for your cluster."
+    USE_GPU=true
+else
+    echo "No GPU detected, forcing CPU"
+    USE_GPU=false
+fi
+
 OPENPIFPAF_TOOLS_DIR="$TOOLS/openpifpaf"
 mkdir -p "$OPENPIFPAF_TOOLS_DIR"
 
@@ -52,7 +67,12 @@ echo "Installing torch ..."
 # torch must be installed before openpifpaf: openpifpaf's pyproject.toml pins
 # torch==1.13.1 as a build dependency, which is no longer on PyPI. Pre-installing
 # torch and using --no-build-isolation skips that constraint.
-"$VENV_DIR/bin/pip" install --no-cache-dir 'torch==1.13.1' 'torchvision==0.14.1'
+if [[ "$USE_GPU" == "true" ]]; then
+    "$VENV_DIR/bin/pip" install --no-cache-dir 'torch==1.13.1' 'torchvision==0.14.1' \
+        --index-url https://download.pytorch.org/whl/cu118
+else
+    "$VENV_DIR/bin/pip" install --no-cache-dir 'torch==1.13.1' 'torchvision==0.14.1'
+fi
 
 echo "Installing openpifpaf ..."
 # setuptools is needed for pkg_resources (used by torch 1.13.1 cpp_extension during build)
