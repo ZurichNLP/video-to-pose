@@ -55,8 +55,6 @@ else
     "$PYTHON_BIN" -m venv "$VENV_DIR"
 fi
 
-python3.10 -m venv "$VENV_DIR"
-
 if [[ "$USE_SLURM" == "true" ]]; then
     echo "Deactivating conda environment..."
     conda deactivate
