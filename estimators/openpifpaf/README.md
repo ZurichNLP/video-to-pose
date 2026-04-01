@@ -20,17 +20,18 @@ Each keypoint's detection confidence is stored separately in the pose body's
 Note: frames where no person is detected are omitted from the output, so the
 frame count may be less than the total number of video frames.
 
+## Installation
+Due to its dependency on `torchvision<0.15`, OpenPifPaf is only compatible with `Python<3.11`. 
+
 ## Arguments
 
 | Argument | Description |
 |---|---|
-| `--use-cpu` | Force CPU inference (default: auto-detect; CPU is used if no CUDA GPU is available) |
+| `--device cpu\|gpu` | Select inference device (default: auto-detect; CPU is used if no CUDA GPU is available) |
 
 ## Notes
 
 - The model checkpoint (`shufflenetv2k30-wholebody`, ~100 MB) is downloaded
   automatically on first run and cached in `~/.cache/torch/hub/checkpoints/`.
-- On macOS Apple Silicon without CUDA, CPU is used automatically; passing
-  `--use-cpu` is not required.
 - For GPU inference on Linux, install a CUDA-enabled torch before running:
   `pip install torch torchvision --index-url https://download.pytorch.org/whl/cu118`

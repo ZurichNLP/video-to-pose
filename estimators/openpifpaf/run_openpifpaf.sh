@@ -8,17 +8,22 @@ TOOLS=$REPO_DIR/tools
 USE_SLURM=false
 INPUT=""
 OUTPUT=""
-USE_CPU=false
+DEVICE=""
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
         --slurm) USE_SLURM=true; shift ;;
         --input) INPUT="$2"; shift 2 ;;
         --output) OUTPUT="$2"; shift 2 ;;
-        --use-cpu) USE_CPU=true; shift ;;
+        --device) DEVICE="$2"; shift 2 ;;
         *) echo "Unknown argument: $1" >&2; exit 1 ;;
     esac
 done
+
+if [[ -n "$DEVICE" && "$DEVICE" != "cpu" && "$DEVICE" != "gpu" ]]; then
+    echo "Error: --device must be 'cpu' or 'gpu'." >&2
+    exit 1
+fi
 
 if [ "$USE_SLURM" = true ]; then
     echo "Error: --slurm is not yet supported for openpifpaf." >&2
@@ -26,7 +31,7 @@ if [ "$USE_SLURM" = true ]; then
 fi
 
 if [[ -z "$INPUT" || -z "$OUTPUT" ]]; then
-    echo "Usage: $0 --input <input_folder> --output <output_folder> [--use-cpu]" >&2
+    echo "Usage: $0 --input <input_folder> --output <output_folder> [--device cpu|gpu]" >&2
     exit 1
 fi
 
@@ -42,7 +47,7 @@ fi
 source "$VENV_DIR/bin/activate"
 
 USE_CPU_ARG=""
-if [ "$USE_CPU" = true ]; then
+if [ "$DEVICE" = "cpu" ]; then
     USE_CPU_ARG="--use-cpu"
 fi
 
