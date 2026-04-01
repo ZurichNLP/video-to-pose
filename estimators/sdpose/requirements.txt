@@ -7,8 +7,9 @@ diffusers
 transformers
 munkres
 pandas
-xtcocotools
+numpy
 mmcv-lite
+xtcocotools
 ultralytics
 accelerate
 pytest

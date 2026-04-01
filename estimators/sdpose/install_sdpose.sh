@@ -66,9 +66,10 @@ fi
 "$VENV_DIR/bin/python" -m pip install --upgrade --no-cache-dir pip setuptools wheel
 
 echo "Installing base requirements ..."
-"$VENV_DIR/bin/pip" install --no-cache-dir -r "$SDPOSE_DIR/requirements.txt"
-
 "$VENV_DIR/bin/pip" install "numpy==1.26.4" --force-reinstall
+"$VENV_DIR/bin/pip" install "numpy==1.23.5" "cython<3" "setuptools<65"
+"$VENV_DIR/bin/pip" install xtcocotools --no-build-isolation
+"$VENV_DIR/bin/pip" install --no-cache-dir -r "$SDPOSE_DIR/requirements.txt"
 
 echo "Cloning pose-format fork (new_estimators branch) ..."
 POSE_REPO="$SDPOSE_TOOLS_DIR/pose"
