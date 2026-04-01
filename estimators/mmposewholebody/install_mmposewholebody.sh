@@ -110,8 +110,7 @@ echo "Installing OpenMMLab packages ..."
 # incompatible with Python 3.12 and breaks pkg_resources during any
 # subsequent source build.  Installing mmcv first avoids the downgrade.
 #
-# For GPU: prebuilt wheel from the OpenMMLab find-links page (PyPI only
-#   has a source dist that fails to compile on most machines).
+# For GPU: prebuilt wheel from the OpenMMLab find-links page 
 # For CPU: pip tries the find-links page first; if no wheel is found it
 #   falls back to a PyPI source build, which succeeds because setuptools
 #   is still at a Python-3.12-compatible version at this point.
