@@ -43,9 +43,18 @@ if [ "$USE_SLURM" = true ]; then
 
     echo "Activating the conda environment..."
     conda activate $SDPOSE_TOOLS_DIR/bootstrap_python3.10
-fi 
+else
+    if command -v python3.10 &>/dev/null; then
+        PYTHON_BIN=python3.10
+        echo "Creating virtual environment at $VENV_DIR using $PYTHON_BIN..."
+    else
+        PYTHON_BIN=python3
+        echo "python3.10 not available, defaulting to $($PYTHON_BIN --version 2>&1). If you encounter package version errors, retry with python3.10."
+    fi
 
-echo "Creating virtual environment at $VENV_DIR ..."
+    "$PYTHON_BIN" -m venv "$VENV_DIR"
+fi
+
 python3.10 -m venv "$VENV_DIR"
 
 if [[ "$USE_SLURM" == "true" ]]; then
