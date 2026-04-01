@@ -32,13 +32,9 @@ fi
 # Check if a GPU is available
 if command -v nvidia-smi &>/dev/null && nvidia-smi -L &>/dev/null; then
     echo "GPU detected, using CUDA"
-    export USE_GPU=true
-    # Load CUDA module if needed (cluster-specific)
     module load cuda/12.9.1 2>/dev/null || echo "CUDA module not found. You may need to specify the correct module syntax for your cluster."
 else
     echo "No GPU detected, forcing CPU"
-    export USE_GPU=false
-    export CUDA_VISIBLE_DEVICES=""   # Force CPU
 fi
 
 if command -v python3.12 &>/dev/null; then
