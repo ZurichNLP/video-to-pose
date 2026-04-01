@@ -22,7 +22,7 @@ if command -v nvidia-smi &>/dev/null && nvidia-smi -L &>/dev/null; then
     echo "GPU detected, using CUDA"
     export USE_GPU=true
     # Load CUDA module if needed (cluster-specific)
-    module load cuda/12.6.3 2>/dev/null || echo "CUDA module not found"
+    module load cuda/12.6.3 2>/dev/null || echo "CUDA module not found. You may need to specify the correct module syntax for your cluster."
 else
     echo "No GPU detected, forcing CPU"
     export USE_GPU=false
@@ -71,7 +71,7 @@ else
         PYTHON_BIN=python3.12
     else
         PYTHON_BIN=python3
-        echo "python3.12 not available, defaulting to $($PYTHON_BIN --version 2>&1)"
+        echo "python3.12 not available, defaulting to $($PYTHON_BIN --version 2>&1). If you encounter package version errors, retry with python3.12."
     fi
     echo "Creating venv at $VENV_DIR using $($PYTHON_BIN --version 2>&1) ..."
     "$PYTHON_BIN" -m venv "$VENV_DIR"
