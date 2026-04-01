@@ -8,7 +8,7 @@ TOOLS=$REPO_DIR/tools
 USE_SLURM=false
 INPUT=""
 OUTPUT=""
-DEVICE="gpu"
+DEVICE=""
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
@@ -19,6 +19,15 @@ while [[ $# -gt 0 ]]; do
         *) echo "Unknown argument: $1" >&2; exit 1 ;;
     esac
 done
+
+# Auto-detect device if not explicitly set
+if [[ -z "$DEVICE" ]]; then
+    if command -v nvidia-smi &>/dev/null && nvidia-smi -L &>/dev/null; then
+        DEVICE="gpu"
+    else
+        DEVICE="cpu"
+    fi
+fi
 
 if [[ "$DEVICE" != "cpu" && "$DEVICE" != "gpu" ]]; then
     echo "Error: --device must be 'cpu' or 'gpu'" >&2

@@ -65,8 +65,16 @@ if [[ "$USE_SLURM" == "true" ]]; then
     #echo "Removing the temporary conda environment used for bootstrapping..."
     #conda remove --prefix "$BOOTSTRAP_ENV" --all -y
 else
-    echo "Creating venv at $VENV_DIR ..."
-    python -m venv $VENV_DIR
+    # Prefer python3.12 (newest version supported by torch 2.2.0 / mmpose).
+    # Fall back to the default python if 3.12 is not available.
+    if command -v python3.12 &>/dev/null; then
+        PYTHON_BIN=python3.12
+    else
+        PYTHON_BIN=python3
+        echo "python3.12 not available, defaulting to $($PYTHON_BIN --version 2>&1)"
+    fi
+    echo "Creating venv at $VENV_DIR using $($PYTHON_BIN --version 2>&1) ..."
+    "$PYTHON_BIN" -m venv "$VENV_DIR"
 fi
 
 echo "Activating the venv..."
@@ -132,7 +140,7 @@ fi
 # whose pkg_resources uses pkgutil.ImpImporter (removed in Python 3.12).
 # Some packages also pull in numpy 2.x, which is ABI-incompatible with modules
 # compiled against numpy 1.x.  Re-install compatible versions as the final step.
-"$VENV_DIR/bin/pip" install --no-cache-dir "setuptools<71" "numpy<2"
+"$VENV_DIR/bin/pip" install --no-cache-dir "setuptools>=67,<71" "numpy<2"
 
 echo
 echo "=== Setup complete ==="
