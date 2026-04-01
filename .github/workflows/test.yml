@@ -10,7 +10,7 @@ jobs:
 
     strategy:
       matrix:
-        estimator: [mediapipe]
+        estimator: [mediapipe, openpifpaf]
       fail-fast: false
 
     steps:
