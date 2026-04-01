@@ -44,12 +44,12 @@ if [ "$USE_SLURM" = true ]; then
     echo "Activating the conda environment..."
     conda activate $SDPOSE_TOOLS_DIR/bootstrap_python3.10
 else
-    if command -v python3.10 &>/dev/null; then
-        PYTHON_BIN=python3.10
+    if command -v python3.12 &>/dev/null; then
+        PYTHON_BIN=python3.12
         echo "Creating virtual environment at $VENV_DIR using $PYTHON_BIN..."
     else
         PYTHON_BIN=python3
-        echo "python3.10 not available, defaulting to $($PYTHON_BIN --version 2>&1). If you encounter package version errors, retry with python3.10."
+        echo "python3.12 not available, defaulting to $($PYTHON_BIN --version 2>&1). If you encounter package version errors, retry with python3.12."
     fi
 
     "$PYTHON_BIN" -m venv "$VENV_DIR"
@@ -63,13 +63,12 @@ if [[ "$USE_SLURM" == "true" ]]; then
 fi
 
 
-"$VENV_DIR/bin/python" -m pip install --upgrade --no-cache-dir pip setuptools wheel
+"$VENV_DIR/bin/python" -m pip install --upgrade pip setuptools wheel
 
 echo "Installing base requirements ..."
-"$VENV_DIR/bin/pip" install "numpy==1.26.4" --force-reinstall
-"$VENV_DIR/bin/pip" install "numpy==1.23.5" "cython<3" "setuptools<65"
-"$VENV_DIR/bin/pip" install xtcocotools --no-build-isolation
-"$VENV_DIR/bin/pip" install --no-cache-dir -r "$SDPOSE_DIR/requirements.txt"
+"$VENV_DIR/bin/pip" install "cython<3" "setuptools>=67,<71" "numpy<2" 
+"$VENV_DIR/bin/pip" install --no-build-isolation chumpy xtcocotools
+"$VENV_DIR/bin/pip" install -r "$SDPOSE_DIR/requirements.txt"
 
 echo "Cloning pose-format fork (new_estimators branch) ..."
 POSE_REPO="$SDPOSE_TOOLS_DIR/pose"
@@ -78,7 +77,7 @@ if [ -d "$POSE_REPO" ]; then
 else
     git clone -b new_estimators https://github.com/catherine-o-brien/pose.git "$POSE_REPO"
 fi
-"$VENV_DIR/bin/pip" install --no-cache-dir -e "$POSE_REPO/src/python"
+"$VENV_DIR/bin/pip" install "$POSE_REPO/src/python"
 
 echo
 echo "=== Setup complete ==="
