@@ -42,40 +42,20 @@ fi
 
 # Load miniforge3 module if on the cluster (required for venv)
 if [[ "$USE_SLURM" == "true" ]]; then
-    BOOTSTRAP_ENV="$MMPOSE_TOOLS_DIR/bootstrap_python3.8"
-    source "$(conda info --base)/etc/profile.d/conda.sh"
-
     echo "Loading miniforge3 module for SLURM..."
     module load miniforge3 2>/dev/null || echo "Warning: miniforge3 module not found"
-
-    # Create bootstrap env if it does not exist
-    if [[ ! -x "$BOOTSTRAP_ENV/bin/python" ]]; then
-        echo "The cluster's miniforge3 module has only python3.12, and mmposewholebody requires python3.8-3.11."
-        echo "Creating temporary Python 3.8 conda environment in which to build the venv..."
-        conda create -y --prefix "$BOOTSTRAP_ENV" python=3.8 || exit 1
-        echo "Conda environment with python=3.8 successfully created at $BOOTSTRAP_ENV"
-    fi
-
-    echo "Activating the conda environment..."
-    conda activate $MMPOSE_TOOLS_DIR/bootstrap_python3.8
-    echo "Creating venv at $VENV_DIR ..."
-    python -m venv $VENV_DIR
-    echo "Deactivating conda environment..."
-    conda deactivate
-    #echo "Removing the temporary conda environment used for bootstrapping..."
-    #conda remove --prefix "$BOOTSTRAP_ENV" --all -y
-else
-    # Prefer python3.12 (newest version supported by torch 2.2.0 / mmpose).
-    # Fall back to the default python if 3.12 is not available.
-    if command -v python3.12 &>/dev/null; then
-        PYTHON_BIN=python3.12
-    else
-        PYTHON_BIN=python3
-        echo "python3.12 not available, defaulting to $($PYTHON_BIN --version 2>&1). If you encounter package version errors, retry with python3.12."
-    fi
-    echo "Creating venv at $VENV_DIR using $($PYTHON_BIN --version 2>&1) ..."
-    "$PYTHON_BIN" -m venv "$VENV_DIR"
 fi
+
+# Prefer python3.12 (newest version supported by torch 2.2.0 / mmpose).
+# Fall back to the default python if 3.12 is not available.
+if command -v python3.12 &>/dev/null; then
+    PYTHON_BIN=python3.12
+else
+    PYTHON_BIN=python3
+    echo "python3.12 not available, defaulting to $($PYTHON_BIN --version 2>&1). If you encounter package version errors, retry with python3.12."
+fi
+echo "Creating venv at $VENV_DIR using $($PYTHON_BIN --version 2>&1) ..."
+"$PYTHON_BIN" -m venv "$VENV_DIR"
 
 echo "Activating the venv..."
 source $VENV_DIR/bin/activate
