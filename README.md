@@ -31,7 +31,7 @@ bash videos_to_poses.sh \
 
 | Parameter |   |
 |----------|---|
-| --type | Which pose estimator to use. Available choices: `openpose`, `mediapipe`  |
+| --type | Which pose estimator to use. Available choices: `openpose`, `mediapipe`, `openpifpaf`  |
 | --input  | Path to folder of videos  |
 | --output | Path to folder of .pose files  |
 | --slurm (optional) | Whether to submit estimation jobs to a SLURM queue instead of executing directly  |
