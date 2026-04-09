@@ -7,6 +7,8 @@ Additional arguments specific to OpenPose that can be passed directly to the mai
 `--chunks`: to specify the number of chunks to split the input videos into, and the number of resulting
 jobs to submit. Only allowed together with `--slurm`.
 
+`--device`: only `gpu` is supported. Passing `--device cpu` will fail with an error.
+
 ## Model and code details
 
 The 137-keypoint OpenPose model will  be used (as opposed to the 135-keypoint model).
@@ -20,8 +22,8 @@ uses a pre-built docker image for OpenPose, based on the original OpenPose sourc
 
 ## Requirements
 
-- Singularity CE >= 3.7 or Apptainer
-- NVIDIA GPU with driver supporting CUDA 11.x
+- Singularity CE >= 3.x or Apptainer >= 1.x
+- NVIDIA GPU with CUDA drivers
 
 OpenPose requires a GPU to run. Making it run on CPU is not possible with reasonable effort in our
 experience, and will be very slow.

@@ -9,16 +9,23 @@ USE_SLURM=false
 INPUT=""
 OUTPUT=""
 NUM_WORKERS=""
+DEVICE=""
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
-        --slurm) USE_SLURM=true; shift ;;
-        --input) INPUT="$2"; shift 2 ;;
-        --output) OUTPUT="$2"; shift 2 ;;
+        --slurm)       USE_SLURM=true; shift ;;
+        --input)       INPUT="$2"; shift 2 ;;
+        --output)      OUTPUT="$2"; shift 2 ;;
         --num-workers) NUM_WORKERS="$2"; shift 2 ;;
+        --device)      DEVICE="$2"; shift 2 ;;
         *) echo "Unknown argument: $1" >&2; exit 1 ;;
     esac
 done
+
+if [[ "$DEVICE" == "gpu" ]]; then
+    echo "Error: mediapipe does not support GPU. Use --device cpu or omit --device." >&2
+    exit 1
+fi
 
 if [ "$USE_SLURM" = true ]; then
     echo "Error: --slurm is not yet supported for mediapipe." >&2

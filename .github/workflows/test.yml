@@ -5,6 +5,13 @@ on:
   pull_request:
 
 jobs:
+  argument-validation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run argument validation tests
+        run: bash test/test_argument_validation.sh
+
   test:
     runs-on: ubuntu-latest
 
