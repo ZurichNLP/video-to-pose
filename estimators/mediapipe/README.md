@@ -22,8 +22,7 @@ The MediaPipe Holistic model is used, producing **586 keypoints** in total acros
 Each keypoint has 3 coordinates (x, y, z). Only 1 person is detected per frame.
 
 Pose estimation is performed via the `videos_to_poses` command from the 
-[`pose-format`](https://github.com/sign-language-processing/pose) library, , which is a wrapper around the 
-MediaPipe model.
+[`pose-format`](https://github.com/sign-language-processing/pose) library, which is a wrapper around the MediaPipe model.
 
 
 The model is run with `model_complexity=2`, `smooth_landmarks=false`, and `refine_face_landmarks=true` (this
@@ -34,7 +33,7 @@ code from [`pose-format`](https://github.com/sign-language-processing/pose).
 ## Requirements
 
 - Python 3
-- No GPU required
+- No GPU required. 
 
 ## Cite
 

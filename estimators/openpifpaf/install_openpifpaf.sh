@@ -5,7 +5,6 @@ OPENPIFPAF_DIR="$(cd "$(dirname "$0")" && pwd)"
 REPO_DIR="$(dirname "$OPENPIFPAF_DIR")"
 TOOLS=$REPO_DIR/tools
 
-# --slurm is accepted but has no effect for this estimator
 USE_SLURM=false
 
 while [[ $# -gt 0 ]]; do
@@ -42,13 +41,24 @@ if [ -d "$VENV_DIR" ]; then
 fi
 
 PYTHON=""
-# openpifpaf requires torch 1.13.1 / torchvision 0.14.1, which only have wheels for Python <=3.10
-for candidate in python3.10 python3.9; do
-    if command -v "$candidate" &>/dev/null; then
-        PYTHON="$candidate"
-        break
+if [[ "$USE_SLURM" == "true" ]]; then
+    # The cluster's system Python is too new for torch 1.13.1 wheels.
+    # Use conda (from miniforge3 module) to create a Python 3.10 environment.
+    CONDA_ENV_DIR="$OPENPIFPAF_TOOLS_DIR/conda_py310"
+    if [ ! -d "$CONDA_ENV_DIR" ]; then
+        echo "Creating conda environment with Python 3.10 at $CONDA_ENV_DIR ..."
+        conda create -y -p "$CONDA_ENV_DIR" python=3.10 --no-default-packages
     fi
-done
+    PYTHON="$CONDA_ENV_DIR/bin/python3.10"
+else
+    # openpifpaf requires torch 1.13.1 / torchvision 0.14.1, which only have wheels for Python <=3.10
+    for candidate in python3.10 python3.9; do
+        if command -v "$candidate" &>/dev/null; then
+            PYTHON="$candidate"
+            break
+        fi
+    done
+fi
 if [ -z "$PYTHON" ]; then
     echo "Error: openpifpaf requires Python 3.9 or 3.10, but neither was found on PATH." >&2
     exit 1
@@ -65,14 +75,8 @@ echo "Installing base requirements ..."
 
 echo "Installing torch ..."
 # torch must be installed before openpifpaf: openpifpaf's pyproject.toml pins
-# torch==1.13.1 as a build dependency, which is no longer on PyPI. Pre-installing
-# torch and using --no-build-isolation skips that constraint.
-if [[ "$USE_GPU" == "true" ]]; then
-    "$VENV_DIR/bin/pip" install --no-cache-dir 'torch==1.13.1' 'torchvision==0.14.1' \
-        --index-url https://download.pytorch.org/whl/cu118
-else
-    "$VENV_DIR/bin/pip" install --no-cache-dir 'torch==1.13.1' 'torchvision==0.14.1'
-fi
+# torch==1.13.1 as a build dependency, which is no longer on PyPI. 
+"$VENV_DIR/bin/pip" install --no-cache-dir 'torch==1.13.1' 'torchvision==0.14.1'
 
 echo "Installing openpifpaf ..."
 # setuptools is needed for pkg_resources (used by torch 1.13.1 cpp_extension during build)
