@@ -31,4 +31,8 @@ assert_fails "alphapose rejects --device cpu" \
 assert_fails "mediapipe rejects --device gpu" \
     "$MAIN" --type mediapipe --input /tmp --output /tmp --device gpu
 
+# GPU-only estimators (continued)
+assert_fails "simplest_x rejects --device cpu" \
+    "$MAIN" --type simplest_x --input /tmp --output /tmp --device cpu
+
 echo "All argument validation tests passed."

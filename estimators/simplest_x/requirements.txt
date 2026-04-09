@@ -1,0 +1,10 @@
+numpy<2
+smplx
+tqdm
+opencv-python
+matplotlib
+json_tricks
+einops
+timm
+ultralytics
+huggingface_hub

@@ -29,8 +29,13 @@ while [[ $# -gt 0 ]]; do
 done
 
 if [[ -z "$TYPE" || -z "$INPUT" || -z "$OUTPUT" ]]; then
-    echo "Usage: $0 --type <estimator> --input <input_folder> --output <output_folder> [--slurm] [...]" >&2
-    echo "Available types: openpose, mediapipe, alphapose, mmposewholebody" >&2
+    echo "Usage: $0 --type <estimator> --input <input_folder> --output <output_folder> [--device cpu|gpu] [--slurm] [...]" >&2
+    echo "Available types: openpose, mediapipe, alphapose, simplest_x, mmposewholebody" >&2
+    exit 1
+fi
+
+if [[ -n "$DEVICE" && "$DEVICE" != "cpu" && "$DEVICE" != "gpu" ]]; then
+    echo "Error: --device must be 'cpu' or 'gpu', got '$DEVICE'." >&2
     exit 1
 fi
 
@@ -68,9 +73,16 @@ case "$TYPE" in
             "${DEVICE_ARG[@]}" \
             "${PASSTHROUGH[@]}"
         ;;
+    simplest_x)
+        bash $SCRIPT_DIR/estimators/simplest_x/run_simplest_x.sh \
+            --input "$INPUT" \
+            --output "$OUTPUT" \
+            "${DEVICE_ARG[@]}" \
+            "${PASSTHROUGH[@]}"
+        ;;
     *)
         echo "Unknown estimator type: $TYPE" >&2
-        echo "Available types: openpose, mediapipe, alphapose, mmposewholebody" >&2
+        echo "Available types: openpose, mediapipe, alphapose, simplest_x, mmposewholebody" >&2
         exit 1
         ;;
 esac
