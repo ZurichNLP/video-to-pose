@@ -17,6 +17,12 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
+# Load miniforge3 module if on the cluster (required for venv)
+if [[ "$USE_SLURM" == "true" ]]; then
+    echo "Loading miniforge3 module for SLURM..."
+    module load miniforge3 2>/dev/null || echo "Warning: miniforge3 module not found"
+fi
+
 # Check if a GPU is available
 if command -v nvidia-smi &>/dev/null && nvidia-smi -L &>/dev/null; then
     echo "GPU detected, using CUDA"
@@ -38,12 +44,6 @@ if [ -d "$VENV_DIR" ]; then
    echo "Virtual environment already exists at $VENV_DIR"
     echo "To recreate, remove it first: rm -rf $VENV_DIR"
     exit 0
-fi
-
-# Load miniforge3 module if on the cluster (required for venv)
-if [[ "$USE_SLURM" == "true" ]]; then
-    echo "Loading miniforge3 module for SLURM..."
-    module load miniforge3 2>/dev/null || echo "Warning: miniforge3 module not found"
 fi
 
 # Prefer python3.12 (newest version supported by torch 2.2.0 / mmpose).
