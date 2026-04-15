@@ -29,7 +29,10 @@ Pose estimation uses [`MMPoseInferencer`](https://mmpose.readthedocs.io/en/lates
 
 When the `install_mmposewholebody.sh` script detects GPU in the environment and `--slurm` is passed, it automatically runs `module load cuda/12.6.3`. If this syntax is not compatible with loading CUDA in your cluster environment, you must load CUDA manually before running the install script. Outside of a SLURM environment, no `module load` commands are run.
 
-Furthermore, the `install_mmposewholebody.sh` script installs different `pytorch` and `torchvision` versions depending on whether or not GPU is available in the environment. If you have GPU in your environment but wish to run MMPose WholeBody with CPU, you should manually downgrade these packages. 
+The `install_mmposewholebody.sh` script installs different `pytorch` and `torchvision` versions depending on whether or not a GPU is
+available in the environment at installation time.
+
+If you have a GPU environment but wish to run on CPU, simply pass `--device cpu` — no package changes are needed.
 
 ## Cite
 
