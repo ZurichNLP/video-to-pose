@@ -31,7 +31,7 @@ bash videos_to_poses.sh \
 
 | Parameter |   |
 |----------|---|
-| --type | Which pose estimator to use. Available choices: `openpose`, `mediapipe`, `alphapose`, `simplest_x`  |
+| --type | Which pose estimator to use. Available choices: `openpose`, `mediapipe`, `alphapose`, `simplest_x`, `openpifpaf`  |
 | --input  | Path to folder of videos  |
 | --output | Path to folder of .pose files  |
 | --device (optional) | `cpu` or `gpu`. Not all estimators support both; unsupported combinations will fail with a clear error. |
