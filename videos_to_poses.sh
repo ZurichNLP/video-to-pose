@@ -30,7 +30,7 @@ done
 
 if [[ -z "$TYPE" || -z "$INPUT" || -z "$OUTPUT" ]]; then
     echo "Usage: $0 --type <estimator> --input <input_folder> --output <output_folder> [--device cpu|gpu] [--slurm] [...]" >&2
-    echo "Available types: openpose, mediapipe, alphapose, simplest_x" >&2
+    echo "Available types: openpose, mediapipe, alphapose, simplest_x, openpifpaf" >&2
     exit 1
 fi
 
@@ -66,6 +66,13 @@ case "$TYPE" in
             "${DEVICE_ARG[@]}" \
             "${PASSTHROUGH[@]}"
         ;;
+    openpifpaf)
+        bash $SCRIPT_DIR/estimators/openpifpaf/run_openpifpaf.sh \
+            --input "$INPUT" \
+            --output "$OUTPUT" \
+            "${DEVICE_ARG[@]}" \
+            "${PASSTHROUGH[@]}"
+        ;;
     simplest_x)
         bash $SCRIPT_DIR/estimators/simplest_x/run_simplest_x.sh \
             --input "$INPUT" \
@@ -75,7 +82,7 @@ case "$TYPE" in
         ;;
     *)
         echo "Unknown estimator type: $TYPE" >&2
-        echo "Available types: openpose, mediapipe, alphapose, simplest_x" >&2
+        echo "Available types: openpose, mediapipe, alphapose, simplest_x, openpifpaf" >&2
         exit 1
         ;;
 esac

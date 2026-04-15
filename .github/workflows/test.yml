@@ -17,11 +17,17 @@ jobs:
 
     strategy:
       matrix:
-        estimator: [mediapipe]
+        estimator: [mediapipe, openpifpaf]
       fail-fast: false
 
     steps:
       - uses: actions/checkout@v4
+
+      - name: Set up Python 3.10
+        if: matrix.estimator == 'openpifpaf'
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
 
       - name: Run ${{ matrix.estimator }} tests
         run: bash test/test_${{ matrix.estimator }}.sh
