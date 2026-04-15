@@ -44,9 +44,13 @@ case "$TYPE" in
     simplest_x)
         bash $SCRIPT_DIR/estimators/simplest_x/install_simplest_x.sh $SLURM_ARG
         ;;
+    sdpose)
+        bash $SCRIPT_DIR/estimators/sdpose/install_sdpose.sh $SLURM_ARG
+        ;;
     *)
+
         echo "Unknown estimator type: $TYPE" >&2
-        echo "Available types: openpose, mediapipe, alphapose, simplest_x" >&2
+        echo "Available types: openpose, mediapipe, alphapose, simplest_x, sdpose" >&2
         exit 1
         ;;
 esac

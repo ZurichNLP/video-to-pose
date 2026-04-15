@@ -1,0 +1,15 @@
+opencv-python
+psutil
+torch
+matplotlib
+torchvision
+diffusers
+transformers
+munkres
+pandas
+numpy
+mmcv-lite
+xtcocotools
+ultralytics
+accelerate
+pytest

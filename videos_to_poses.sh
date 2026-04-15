@@ -30,7 +30,7 @@ done
 
 if [[ -z "$TYPE" || -z "$INPUT" || -z "$OUTPUT" ]]; then
     echo "Usage: $0 --type <estimator> --input <input_folder> --output <output_folder> [--device cpu|gpu] [--slurm] [...]" >&2
-    echo "Available types: openpose, mediapipe, alphapose, simplest_x, mmposewholebody, openpifpaf" >&2
+    echo "Available types: openpose, mediapipe, alphapose, simplest_x, mmposewholebody, openpifpaf, sdpose" >&2
     exit 1
 fi
 
@@ -87,9 +87,15 @@ case "$TYPE" in
             "${DEVICE_ARG[@]}" \
             "${PASSTHROUGH[@]}"
         ;;
+    sdpose)
+        bash $SCRIPT_DIR/estimators/sdpose/run_sdpose.sh \
+            --input "$INPUT" \
+            --output "$OUTPUT" \
+            "${PASSTHROUGH[@]}"
+        ;;
     *)
         echo "Unknown estimator type: $TYPE" >&2
-        echo "Available types: openpose, mediapipe, alphapose, simplest_x, mmposewholebody, openpifpaf" >&2
+        echo "Available types: openpose, mediapipe, alphapose, simplest_x, mmposewholebody, openpifpaf, sdpose" >&2
         exit 1
         ;;
 esac
