@@ -31,7 +31,7 @@ In its original implementation, OpenPifPaf can detect multiple people per frame.
 ## Requirements
 - GPU is preferred but optional
 - Due to its dependency on `torchvision<0.15`, OpenPifPaf is only compatible with `Python=3.9` and `Python=3.10`. To accommodate on this on the SLURM cluster, which only has `python=3.12`, we create a conda environment with `python=3.10` and create the venv with `python=3.12` within that conda environment. 
-- When the `install.sh` script detects GPU, CUDA is loaded with `module load cuda/12.6.3`. If this is incorrect syntax on your system, you should load CUDA manually prior to running the install script. 
+- When the `install_openpifpaf.sh` script detects GPU and `--slurm` is passed, CUDA is loaded with `module load cuda/12.6.3`. If this is incorrect syntax on your cluster, load CUDA manually before running the install script. Outside of a SLURM environment, no `module load` commands are run.
 
 ## Cite
 ```bibtex
