@@ -10,12 +10,10 @@ Additional arguments specific to SDPose that can be passed directly to the main 
 
 The SDPose model is used, producing **133 keypoints** in the COCO-Wholebody-133 format. 
 
-Each keypoint has 3 coordinates (x, y, z). In the original SDPose implementation, 
+Each keypoint has 3 coordinates (x, y, z) in the original SDPose implementation, 
 
 Pose estimation is performed via the `videos_to_poses` command from a branch of the 
-[`pose-format`] library located [`here`](https://github.com/catherine-o-brien/pose/tree/new_estimators). The code is based upon SDPose's [Gradio implementation](https://huggingface.co/spaces/teemosliang/SDPose). Notably, while the original implementation of SDPose can detect multiple people, ours accepts only the detected person with the highest keypoint confidence. 
-
-## Model and code details
+[`pose-format`] library located [`here`](https://github.com/catherine-o-brien/pose/tree/new_estimators). The code is based upon SDPose's [Gradio implementation](https://huggingface.co/spaces/teemosliang/SDPose). Notably, while the original implementation of SDPose can detect multiple people, ours accepts only the detected person with the highest keypoint confidence.
 
 Pose estimation is performed via the `videos_to_poses` command from a fork of the
 [`pose-format`](https://github.com/catherine-o-brien/pose) library (`new_estimators` branch),
