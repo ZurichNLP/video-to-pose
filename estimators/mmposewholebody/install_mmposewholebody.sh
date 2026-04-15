@@ -28,7 +28,9 @@ if command -v nvidia-smi &>/dev/null && nvidia-smi -L &>/dev/null; then
     echo "GPU detected, using CUDA"
     export USE_GPU=true
     # Load CUDA module if needed (cluster-specific)
-    module load cuda/12.6.3 2>/dev/null || echo "CUDA module not found. You may need to specify the correct module syntax for your cluster."
+    if [[ "$USE_SLURM" == "true" ]]; then
+        module load cuda/12.6.3 2>/dev/null || echo "CUDA module not found. You may need to specify the correct module syntax for your cluster."
+    fi
 else
     echo "No GPU detected, forcing CPU"
     export USE_GPU=false
