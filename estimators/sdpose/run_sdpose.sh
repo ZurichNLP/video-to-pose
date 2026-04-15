@@ -20,6 +20,11 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
+if [[ -n "$DEVICE" && "$DEVICE" != "cpu" && "$DEVICE" != "gpu" ]]; then
+    echo "Error: --device must be 'cpu' or 'gpu'." >&2
+    exit 1
+fi
+
 if [ "$USE_SLURM" = true ]; then
     echo "Error: --slurm is not yet supported for sdpose." >&2
     exit 1
@@ -42,16 +47,16 @@ NUM_WORKERS_ARG=""
 if [[ -n "${NUM_WORKERS:-}" ]]; then
     NUM_WORKERS_ARG="--num-workers $NUM_WORKERS"
 fi
-DEVICE_ARG=""
-if [[ -n "$DEVICE" ]]; then
-    DEVICE_ARG="--device $DEVICE"
+USE_CPU_ARG=""
+if [[ "$DEVICE" == "cpu" ]]; then
+    USE_CPU_ARG="--use-cpu"
 fi
 
 videos_to_poses \
     --format sdpose \
     --directory "$INPUT" \
     $NUM_WORKERS_ARG \
-    $DEVICE_ARG
+    $USE_CPU_ARG
 deactivate
 
 mkdir -p "$OUTPUT"
