@@ -171,3 +171,39 @@ def test_mmposewholebody_shape(pose_file):
     assert coords == MMPOSEWHOLEBODY_NUM_COORDS, (
         f"Expected {MMPOSEWHOLEBODY_NUM_COORDS} coordinates (x, y), got {coords}"
     )
+
+
+# ── OpenPifPaf ────────────────────────────────────────────────────────────────
+
+OPENPIFPAF_OUTPUT_DIR = os.path.join(TEST_DIR, "data", "output", "openpifpaf")
+# 133 keypoints: 17 body + 68 face + 21 left hand + 21 right hand + 6 foot
+OPENPIFPAF_NUM_KEYPOINTS = 133
+OPENPIFPAF_NUM_COORDS = 2  # x, y
+
+
+def get_openpifpaf_files():
+    return glob.glob(os.path.join(OPENPIFPAF_OUTPUT_DIR, "**", "*.pose"), recursive=True)
+
+
+@pytest.mark.parametrize("pose_file", get_openpifpaf_files())
+def test_openpifpaf_shape(pose_file):
+    with open(pose_file, "rb") as f:
+        pose = Pose.read(f.read())
+
+    # shape: (frames, people, keypoints, coordinates)
+    # Note: frames where no person is detected are omitted, so frame count
+    # may be less than the total video frame count.
+    shape = pose.body.data.shape
+
+    assert len(shape) == 4, f"Expected 4 dimensions, got {len(shape)}"
+
+    frames, people, keypoints, coords = shape
+
+    assert frames >= 1, "Expected at least one frame with a detection"
+    assert people >= 1, "Expected at least one person"
+    assert keypoints == OPENPIFPAF_NUM_KEYPOINTS, (
+        f"Expected {OPENPIFPAF_NUM_KEYPOINTS} keypoints (OpenPifPaf wholebody 133-keypoint model), got {keypoints}"
+    )
+    assert coords == OPENPIFPAF_NUM_COORDS, (
+        f"Expected {OPENPIFPAF_NUM_COORDS} coordinates (x, y), got {coords}"
+    )
