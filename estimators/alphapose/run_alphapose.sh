@@ -2,7 +2,8 @@
 set -euo pipefail
 
 ALPHAPOSE_DIR="$(cd "$(dirname "$0")" && pwd)"
-REPO_DIR="$(dirname "$ALPHAPOSE_DIR")"
+ESTIMATORS_DIR="$(dirname "$ALPHAPOSE_DIR")"
+REPO_DIR="$(dirname "$ESTIMATORS_DIR")"
 TOOLS=$REPO_DIR/tools
 
 USE_SLURM=false

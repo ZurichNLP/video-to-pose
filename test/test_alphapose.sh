@@ -20,7 +20,7 @@ bash "$REPO_DIR/videos_to_poses.sh" \
     --input "$INPUT_DIR" \
     --output "$OUTPUT_DIR"
 
-ALPHAPOSE_VENV="$REPO_DIR/estimators/tools/alphapose/alphapose-singularity-uzh/venv"
+ALPHAPOSE_VENV="$REPO_DIR/tools/alphapose/alphapose-singularity-uzh/venv"
 
 # Test output pose shape
 source "$ALPHAPOSE_VENV/bin/activate"

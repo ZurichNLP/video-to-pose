@@ -44,7 +44,7 @@ bash "$REPO_DIR/videos_to_poses.sh" \
     $SLURM_ARG \
     "${PASSTHROUGH[@]}"
 
-OPENPIFPAF_VENV="$REPO_DIR/estimators/tools/openpifpaf/venv"
+OPENPIFPAF_VENV="$REPO_DIR/tools/openpifpaf/venv"
 
 # Test output pose shape
 source "$OPENPIFPAF_VENV/bin/activate"

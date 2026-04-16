@@ -20,7 +20,7 @@ bash "$REPO_DIR/videos_to_poses.sh" \
     --input "$INPUT_DIR" \
     --output "$OUTPUT_DIR"
 
-OPENPOSE_VENV="$REPO_DIR/estimators/tools/openpose/openpose-singularity-uzh/venv"
+OPENPOSE_VENV="$REPO_DIR/tools/openpose/openpose-singularity-uzh/venv"
 
 # Test output pose shape
 source "$OPENPOSE_VENV/bin/activate"

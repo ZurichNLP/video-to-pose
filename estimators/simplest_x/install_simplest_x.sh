@@ -2,7 +2,8 @@
 set -euo pipefail
 
 SIMPLEST_X_DIR="$(cd "$(dirname "$0")" && pwd)"
-REPO_DIR="$(dirname "$SIMPLEST_X_DIR")"
+ESTIMATORS_DIR="$(dirname "$SIMPLEST_X_DIR")"
+REPO_DIR="$(dirname "$ESTIMATORS_DIR")"
 TOOLS=$REPO_DIR/tools
 
 # --slurm is accepted and silently ignored (no container build needed)
