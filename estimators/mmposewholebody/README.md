@@ -4,6 +4,8 @@
 
 `--device cpu|gpu`: device to use for inference. If omitted, GPU is used when detected via `nvidia-smi`, otherwise CPU. CPU is slow; use only if no GPU is available.
 
+`--num-workers N`: number of parallel workers for processing videos (default: 1).
+
 ## Model and code details
 
 Uses the MMPose `wholebody` model alias, which runs a top-down whole-body pose estimator producing **133 keypoints** across 4 components:

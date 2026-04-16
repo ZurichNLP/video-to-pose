@@ -9,6 +9,7 @@ USE_SLURM=false
 INPUT=""
 OUTPUT=""
 DEVICE=""
+NUM_WORKERS=""
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
@@ -16,6 +17,7 @@ while [[ $# -gt 0 ]]; do
         --input) INPUT="$2"; shift 2 ;;
         --output) OUTPUT="$2"; shift 2 ;;
         --device) DEVICE="$2"; shift 2 ;;
+        --num-workers) NUM_WORKERS="$2"; shift 2 ;;
         *) echo "Unknown argument: $1" >&2; exit 1 ;;
     esac
 done
@@ -55,7 +57,7 @@ fi
 # the input directory and then move the results to the output directory.
 source "$VENV_DIR/bin/activate"
 NUM_WORKERS_ARG=""
-if [[ -n "${NUM_WORKERS:-}" ]]; then
+if [[ -n "$NUM_WORKERS" ]]; then
     NUM_WORKERS_ARG="--num-workers $NUM_WORKERS"
 fi
 USE_CPU_ARG=""

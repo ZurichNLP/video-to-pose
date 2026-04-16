@@ -4,7 +4,9 @@
 
 Additional arguments specific to SDPose that can be passed directly to the main script:
 
-`--device`: device to run inference on. Accepts `cpu` or `gpu`. Defaults to CPU if not specified.
+`--device`: device to run inference on. Accepts `cpu` or `gpu`. Defaults to `cpu` if not specified.
+
+`--num-workers N`: number of parallel workers for processing videos (default: 1).
 
 ## Model and code details
 
@@ -22,7 +24,7 @@ using `--format sdpose`.
 ## Requirements
 
 - Python 3.10
-- GPU optional (use `--device gpu` to enable)
+- NVIDIA GPU with CUDA drivers (optional, if `--device gpu` is used)
 
 ## Cite
 
