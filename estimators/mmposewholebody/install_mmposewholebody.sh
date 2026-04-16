@@ -2,7 +2,8 @@
 set -euo pipefail
 
 MMPOSEWHOLEBODY_DIR="$(cd "$(dirname "$0")" && pwd)"
-REPO_DIR="$(dirname "$MMPOSEWHOLEBODY_DIR")"
+ESTIMATORS_DIR="$(dirname "$MMPOSEWHOLEBODY_DIR")"
+REPO_DIR="$(dirname "$ESTIMATORS_DIR")"
 TOOLS=$REPO_DIR/tools
 
 # When --slurm is passed, the script will load the cluster's 

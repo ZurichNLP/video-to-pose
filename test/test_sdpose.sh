@@ -32,7 +32,7 @@ bash "$REPO_DIR/videos_to_poses.sh" \
     --output "$OUTPUT_DIR" \
     $DEVICE_ARG
 
-SDPOSE_VENV="$REPO_DIR/estimators/tools/sdpose/venv"
+SDPOSE_VENV="$REPO_DIR/tools/sdpose/venv"
 
 # Test output pose shape
 source "$SDPOSE_VENV/bin/activate"

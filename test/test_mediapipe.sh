@@ -20,7 +20,7 @@ bash "$REPO_DIR/videos_to_poses.sh" \
     --input "$INPUT_DIR" \
     --output "$OUTPUT_DIR"
 
-MEDIAPIPE_VENV="$REPO_DIR/estimators/tools/mediapipe/venv"
+MEDIAPIPE_VENV="$REPO_DIR/tools/mediapipe/venv"
 
 # Test output pose shape
 source "$MEDIAPIPE_VENV/bin/activate"

@@ -2,7 +2,8 @@
 set -euo pipefail
 
 MEDIAPIPE_DIR="$(cd "$(dirname "$0")" && pwd)"
-REPO_DIR="$(dirname "$MEDIAPIPE_DIR")"
+ESTIMATORS_DIR="$(dirname "$MEDIAPIPE_DIR")"
+REPO_DIR="$(dirname "$ESTIMATORS_DIR")"
 TOOLS=$REPO_DIR/tools
 
 # this script does not change if --slurm is used, but will allow the argument and ignore silently

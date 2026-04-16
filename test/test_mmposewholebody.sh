@@ -32,7 +32,7 @@ bash "$REPO_DIR/videos_to_poses.sh" \
     --output "$OUTPUT_DIR" \
     $DEVICE_ARG
 
-MMPOSEWHOLEBODY_VENV="$REPO_DIR/estimators/tools/mmposewholebody/venv"
+MMPOSEWHOLEBODY_VENV="$REPO_DIR/tools/mmposewholebody/venv"
 
 # Test output pose shape
 source "$MMPOSEWHOLEBODY_VENV/bin/activate"
