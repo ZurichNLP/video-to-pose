@@ -4,7 +4,7 @@
 
 `--device cpu|gpu`: device to use for inference. If omitted, GPU is used when detected via `nvidia-smi`, otherwise CPU. CPU is slow; use only if no GPU is available.
 
-`--num-workers N`: number of parallel workers for processing videos (default: 1).
+`--num-workers N`: number of parallel workers for processing videos (default: 1). Only useful with `--device cpu`; with GPU, multiple workers compete for GPU memory and will likely cause out-of-memory errors.
 
 ## Model and code details
 

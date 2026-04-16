@@ -6,7 +6,7 @@ Additional arguments specific to OpenPifPaf that can be passed directly to the m
 
 `--device`: device to run inference on. Accepts `cpu` or `gpu`. Defaults to `gpu` if not specified.
 
-`--num-workers N`: number of parallel workers for processing videos (default: 1).
+`--num-workers N`: number of parallel workers for processing videos (default: 1). Only useful with `--device cpu`; with GPU, multiple workers compete for GPU memory and will likely cause out-of-memory errors.
 
 ## Model and code details
 
