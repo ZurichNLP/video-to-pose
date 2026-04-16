@@ -46,49 +46,49 @@ fi
 
 case "$TYPE" in
     openpose)
-        bash $SCRIPT_DIR/estimators/openpose/run_openpose.sh \
+        bash "$SCRIPT_DIR/estimators/openpose/run_openpose.sh" \
             --input "$INPUT" \
             --output "$OUTPUT" \
             "${DEVICE_ARG[@]}" \
             "${PASSTHROUGH[@]}"
         ;;
     mediapipe)
-        bash $SCRIPT_DIR/estimators/mediapipe/run_mediapipe.sh \
+        bash "$SCRIPT_DIR/estimators/mediapipe/run_mediapipe.sh" \
             --input "$INPUT" \
             --output "$OUTPUT" \
             "${DEVICE_ARG[@]}" \
             "${PASSTHROUGH[@]}"
         ;;
     alphapose)
-        bash $SCRIPT_DIR/estimators/alphapose/run_alphapose.sh \
+        bash "$SCRIPT_DIR/estimators/alphapose/run_alphapose.sh" \
             --input "$INPUT" \
             --output "$OUTPUT" \
             "${DEVICE_ARG[@]}" \
             "${PASSTHROUGH[@]}"
         ;;
     mmposewholebody)
-        bash $SCRIPT_DIR/estimators/mmposewholebody/run_mmposewholebody.sh \
+        bash "$SCRIPT_DIR/estimators/mmposewholebody/run_mmposewholebody.sh" \
             --input "$INPUT" \
             --output "$OUTPUT" \
             "${DEVICE_ARG[@]}" \
             "${PASSTHROUGH[@]}"
         ;;
     openpifpaf)
-        bash $SCRIPT_DIR/estimators/openpifpaf/run_openpifpaf.sh \
+        bash "$SCRIPT_DIR/estimators/openpifpaf/run_openpifpaf.sh" \
             --input "$INPUT" \
             --output "$OUTPUT" \
             "${DEVICE_ARG[@]}" \
             "${PASSTHROUGH[@]}"
         ;;
     simplest_x)
-        bash $SCRIPT_DIR/estimators/simplest_x/run_simplest_x.sh \
+        bash "$SCRIPT_DIR/estimators/simplest_x/run_simplest_x.sh" \
             --input "$INPUT" \
             --output "$OUTPUT" \
             "${DEVICE_ARG[@]}" \
             "${PASSTHROUGH[@]}"
         ;;
     sdpose)
-        bash $SCRIPT_DIR/estimators/sdpose/run_sdpose.sh \
+        bash "$SCRIPT_DIR/estimators/sdpose/run_sdpose.sh" \
             --input "$INPUT" \
             --output "$OUTPUT" \
             "${PASSTHROUGH[@]}"
