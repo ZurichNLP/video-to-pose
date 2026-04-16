@@ -71,6 +71,20 @@ some_script $SLURM_ARG
   - Estimators that support both: accept any value without failing
 - The device check should appear right after argument parsing, before any pre-flight checks. This ensures it fails fast and cleanly even when the estimator is not installed.
 
+**Library flag translation** — some underlying libraries do not accept `--device cpu|gpu` directly. Translate in the run script before forwarding. Example (sdpose, openpifpaf):
+```bash
+USE_CPU_ARG=()
+if [[ "$DEVICE" == "cpu" ]]; then
+    USE_CPU_ARG=(--use-cpu)
+fi
+videos_to_poses ... "${USE_CPU_ARG[@]}"
+```
+Never pass `--device` verbatim to a library that doesn't understand it.
+
+## `--num-workers` and GPU safety
+
+When an estimator uses `process_map` (or similar multiprocessing) to parallelize across videos, each worker loads the model independently. With `--device gpu`, multiple workers on a single GPU will compete for memory and cause OOM errors. Document this limitation in the estimator's README and, if possible, enforce or warn in the run script. `--num-workers` > 1 is only safe with `--device cpu`.
+
 ## Testing: asserting a command fails
 
 To assert that a script exits non-zero in a bash test (useful for validation tests):
@@ -92,6 +106,7 @@ Validation tests (argument rejection, device/estimator mismatches) require no in
 - `--slurm` is an optional flag on both `install.sh` and `videos_to_poses.sh`, forwarded to estimator scripts.
 - **Install scripts** must always accept `--slurm`, even if it makes no difference for that estimator (i.e. silently ignored). This keeps the top-level interface uniform.
 - **Run scripts** must fail with a clear error if `--slurm` is passed but no SLURM submission code exists yet for that estimator. Do not silently ignore it.
+- **`module load` must be gated behind `--slurm`** — Lmod commands (`module load cuda/...`) are cluster-specific and must only run when `--slurm` is passed. Calling `module load` outside a SLURM environment will error. Check `$USE_SLURM` before invoking.
 - Some upstream scripts use `$SLURM_SUBMIT_DIR` to locate their own files, so they must be called via `sbatch` from their repo root. Use a subshell to avoid affecting the calling script's working directory:
   ```bash
   (cd $SOME_REPO && sbatch scripts/some_script.sh)
