@@ -30,7 +30,7 @@ done
 
 if [[ -z "$TYPE" || -z "$INPUT" || -z "$OUTPUT" ]]; then
     echo "Usage: $0 --type <estimator> --input <input_folder> --output <output_folder> [--device cpu|gpu] [--slurm] [...]" >&2
-    echo "Available types: openpose, mediapipe, alphapose, simplest_x, mmposewholebody, openpifpaf, sdpose" >&2
+    echo "Available types: openpose, mediapipe, alphapose, simplest_x, mmposewholebody, openpifpaf, sdpose, sapiens" >&2
     exit 1
 fi
 
@@ -93,9 +93,16 @@ case "$TYPE" in
             --output "$OUTPUT" \
             "${PASSTHROUGH[@]}"
         ;;
+    sapiens)
+        bash "$SCRIPT_DIR/estimators/sapiens/run_sapiens.sh" \
+            --input "$INPUT" \
+            --output "$OUTPUT" \
+            "${DEVICE_ARG[@]}" \
+            "${PASSTHROUGH[@]}"
+        ;;
     *)
         echo "Unknown estimator type: $TYPE" >&2
-        echo "Available types: openpose, mediapipe, alphapose, simplest_x, mmposewholebody, openpifpaf, sdpose" >&2
+        echo "Available types: openpose, mediapipe, alphapose, simplest_x, mmposewholebody, openpifpaf, sdpose, sapiens" >&2
         exit 1
         ;;
 esac
