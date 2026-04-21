@@ -43,16 +43,15 @@ if [ -d "$VENV_DIR" ]; then
     exit 0
 fi
 
-echo "Creating virtual environment for Sapiens at $VENV_DIR... with python $(which python)"
+echo "Creating virtual environment for Sapiens at $VENV_DIR with $(python --version) ..."
 python -m venv "$VENV_DIR"
 "$VENV_DIR/bin/pip" install --no-cache-dir -r "$SAPIENS_DIR/requirements.txt"
 
 echo "Cloning pose-format fork (new_estimators branch) ..."
-POSE_REPO="/Users/catherineobrien/src/pose" #POSE_REPO="$SAPIENS_TOOLS_DIR/pose"
-#if [ -d "$POSE_REPO" ]; then
-#    echo "Pose repo already cloned at $POSE_REPO"
-#else
-#    git clone -b new_estimators https://github.com/catherine-o-brien/pose.git "$POSE_REPO"
-#fi
-
+POSE_REPO="$SAPIENS_TOOLS_DIR/pose"
+if [ -d "$POSE_REPO" ]; then
+    echo "Pose repo already cloned at $POSE_REPO"
+else
+    git clone -b new_estimators https://github.com/catherine-o-brien/pose.git "$POSE_REPO"
+fi
 "$VENV_DIR/bin/pip" install --no-cache-dir -e "$POSE_REPO/src/python"

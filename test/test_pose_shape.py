@@ -240,3 +240,35 @@ def test_sdpose_shape(pose_file):
     assert coords == SDPOSE_NUM_COORDS, (
         f"Expected {SDPOSE_NUM_COORDS} coordinates (x, y), got {coords}"
     )
+
+# ── SAPIENS ────────────────────────────────────────────────────────────────────
+
+SAPIENS_OUTPUT_DIR = os.path.join(TEST_DIR, "data", "output", "sapiens")
+SAPIENS_OUTPUT_DIR_NUM_KEYPOINTS = 308 # Goliath 308 keypoints
+SAPIENS_OUTPUT_DIR_NUM_COORDS = 2  # x, y
+
+
+def get_sapiens_files():
+    return glob.glob(os.path.join(SAPIENS_OUTPUT_DIR, "**", "*.pose"), recursive=True)
+
+
+@pytest.mark.parametrize("pose_file", get_sapiens_files())
+def test_sapiens_shape(pose_file):
+    with open(pose_file, "rb") as f:
+        pose = Pose.read(f.read())
+
+    # shape: (frames, people, keypoints, coordinates)
+    shape = pose.body.data.shape
+
+    assert len(shape) == 4, f"Expected 4 dimensions, got {len(shape)}"
+
+    frames, people, keypoints, coords = shape
+
+    assert frames == 62, f"Expected 62 frames, got {frames}"
+    assert people >= 1, "Expected at least one person"
+    assert keypoints == SAPIENS_OUTPUT_DIR_NUM_KEYPOINTS, (
+        f"Expected {SAPIENS_OUTPUT_DIR_NUM_KEYPOINTS} keypoints , got {keypoints}"
+    )
+    assert coords == SAPIENS_OUTPUT_DIR_NUM_COORDS, (
+        f"Expected {SAPIENS_OUTPUT_DIR_NUM_COORDS} coordinates (x, y), got {coords}"
+    )
