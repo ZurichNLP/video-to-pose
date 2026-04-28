@@ -55,3 +55,26 @@ else
     git clone -b new_estimators https://github.com/catherine-o-brien/pose.git "$POSE_REPO"
 fi
 "$VENV_DIR/bin/pip" install --no-cache-dir -e "$POSE_REPO/src/python"
+
+# Install sapiens_inference eagerly so we can pre-place the pose model.
+# pose_format/utils/sapiens.py would lazy-install it on first use anyway.
+"$VENV_DIR/bin/pip" install --no-cache-dir \
+    "git+https://github.com/ibaiGorordo/Sapiens-Pytorch-Inference.git"
+
+# Pre-download the Sapiens pose model.
+# Upstream renamed the file on HF main (AP_640 → AP_639), so sapiens_inference's
+# download path (raw requests.get on a constructed main-branch URL) 404s on a
+# fresh runner.  Pin a snapshot that still hosts AP_640, and save as ".pt"
+# (no "2") — that's what download_hf_model() checks for as the "already cached"
+# sentinel before trying to download.
+SAPIENS_PKG_DIR="$("$VENV_DIR/bin/python" -c \
+    'import os, sapiens_inference; print(os.path.dirname(os.path.abspath(sapiens_inference.__file__)))')"
+SAPIENS_REPO_ROOT="$(dirname "$SAPIENS_PKG_DIR")"
+SAPIENS_MODELS_DIR="$SAPIENS_REPO_ROOT/models"
+mkdir -p "$SAPIENS_MODELS_DIR"
+SAPIENS_MODEL_DST="$SAPIENS_MODELS_DIR/sapiens_1b_goliath_best_goliath_AP_640_torchscript.pt"
+SAPIENS_MODEL_URL="https://huggingface.co/facebook/sapiens-pose-1b-torchscript/resolve/4caa2b2290255dc8963b5ead35fe3c6e761742aa/sapiens_1b_goliath_best_goliath_AP_640_torchscript.pt2"
+if [ ! -f "$SAPIENS_MODEL_DST" ]; then
+    echo "Pre-downloading Sapiens pose model to $SAPIENS_MODEL_DST ..."
+    wget -q --show-progress -O "$SAPIENS_MODEL_DST" "$SAPIENS_MODEL_URL"
+fi
