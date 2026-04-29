@@ -54,12 +54,7 @@ if [ -d "$POSE_REPO" ]; then
 else
     git clone -b new_estimators https://github.com/catherine-o-brien/pose.git "$POSE_REPO"
 fi
-"$VENV_DIR/bin/pip" install --no-cache-dir -e "$POSE_REPO/src/python"
-
-# Install sapiens_inference eagerly so we can pre-place the pose model.
-# pose_format/utils/sapiens.py would lazy-install it on first use anyway.
-"$VENV_DIR/bin/pip" install --no-cache-dir \
-    "git+https://github.com/ibaiGorordo/Sapiens-Pytorch-Inference.git"
+"$VENV_DIR/bin/pip" install --no-cache-dir -e "$POSE_REPO/src/python[sapiens]"
 
 # Pre-download the Sapiens pose model.
 # Upstream renamed the file on HF main (AP_640 → AP_639), so sapiens_inference's
