@@ -244,7 +244,9 @@ def test_sdpose_shape(pose_file):
 # ── SAPIENS ────────────────────────────────────────────────────────────────────
 
 SAPIENS_OUTPUT_DIR = os.path.join(TEST_DIR, "data", "output", "sapiens")
-SAPIENS_OUTPUT_DIR_NUM_KEYPOINTS = 308 # Goliath 308 keypoints
+SAPIENS_OUTPUT_DIR_NUM_KEYPOINTS = 310 # Goliath has 308 keypoints, but we duplicate the two wrist points
+                                       # so that the wrists can be included in both the body and the hand
+                                       # keypoint sets, as they are in the other estimators. 
 SAPIENS_OUTPUT_DIR_NUM_COORDS = 2  # x, y
 
 
