@@ -47,9 +47,12 @@ case "$TYPE" in
     sdpose)
         bash "$SCRIPT_DIR/estimators/sdpose/install_sdpose.sh" $SLURM_ARG
         ;;
+    sapiens)
+        bash "$SCRIPT_DIR/estimators/sapiens/install_sapiens.sh" $SLURM_ARG
+        ;;
     *)
         echo "Unknown estimator type: $TYPE" >&2
-        echo "Available types: openpose, mediapipe, alphapose, simplest_x, mmposewholebody, openpifpaf, sdpose" >&2
+        echo "Available types: openpose, mediapipe, alphapose, simplest_x, mmposewholebody, openpifpaf, sdpose, sapiens" >&2
         exit 1
         ;;
 esac
