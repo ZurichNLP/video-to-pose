@@ -28,6 +28,11 @@ if [[ -n "$DEVICE" && "$DEVICE" != "cpu" && "$DEVICE" != "gpu" ]]; then
     exit 1
 fi
 
+if [ "$USE_SLURM" = true ]; then
+    echo "Error: --slurm is not yet supported for sapiens inference." >&2
+    exit 1
+fi
+
 if [[ -z "$INPUT" || -z "$OUTPUT" ]]; then
     echo "Usage: $0 --input <input_folder> --output <output_folder> [--device cpu|gpu]" >&2
     exit 1

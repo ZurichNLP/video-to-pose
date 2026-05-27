@@ -42,7 +42,9 @@ The model weights (`sapiens-pose-1b`, TorchScript, several GB) are hosted on Hug
 
 ### Cluster-specific notes (if using the flag `--slurm`)
 
-When `--slurm` is passed, `install_sapiens.sh` loads the `miniforge3` module and, if a GPU is detected, `module load cuda/12.6.3`. If this is incorrect syntax on your cluster, load CUDA manually before running the install script. Outside of a SLURM environment, no `module load` commands are run.
+`--slurm` is supported by **install only**. When passed to `install.sh --type sapiens`, `install_sapiens.sh` loads the `miniforge3` module and, if a GPU is detected, `module load cuda/12.6.3`. If this is incorrect syntax on your cluster, load CUDA manually before running the install script. Outside of a SLURM environment, no `module load` commands are run.
+
+Inference does **not** yet support SLURM: there is no job-submission code, so `run_sapiens.sh` rejects `--slurm` with an error rather than silently running locally.
 
 ## Cite
 ```bibtex
