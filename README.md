@@ -94,3 +94,14 @@ Estimator-specific tests live in the `test/` directory. See [`test/README.md`](t
     year={2026}
 }
 ```
+
+```bibtex
+@misc{obrien2026comparing,
+  title        = {Comparing Pose Estimators for Sign Language Translation},
+  author       = {O'Brien, Catherine and Sant, Gerard and M\"{u}ller, Mathias and Ebling, Sarah},
+  year         = {2026},
+  eprint       = {2604.24609},
+  archivePrefix= {arXiv},
+  primaryClass = {cs.CL},
+  url          = {https://arxiv.org/abs/2604.24609},
+}
