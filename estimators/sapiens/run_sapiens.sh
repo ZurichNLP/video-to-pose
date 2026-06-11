@@ -11,6 +11,7 @@ INPUT=""
 OUTPUT=""
 DEVICE=""
 NUM_WORKERS=""
+MODEL_SIZE="1b"
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
@@ -19,6 +20,7 @@ while [[ $# -gt 0 ]]; do
         --output) OUTPUT="$2"; shift 2 ;;
         --device) DEVICE="$2"; shift 2 ;;
         --num-workers) NUM_WORKERS="$2"; shift 2 ;;
+        --model-size) MODEL_SIZE="$2"; shift 2 ;;
         *) echo "Unknown argument: $1" >&2; exit 1 ;;
     esac
 done
@@ -57,8 +59,6 @@ NUM_WORKERS_ARG=""
 if [[ -n "$NUM_WORKERS" ]]; then
     NUM_WORKERS_ARG="--num-workers $NUM_WORKERS"
 fi
-
-MODEL_SIZE="${SAPIENS_MODEL_SIZE:-1b}"
 
 videos_to_poses \
     --format sapiens \

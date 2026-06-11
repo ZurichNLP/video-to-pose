@@ -6,10 +6,12 @@ REPO_DIR="$(dirname "$SCRIPT_DIR")"
 
 USE_SLURM=false
 PASSTHROUGH=()
+MODEL_SIZE_ARG=()
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
         --slurm) USE_SLURM=true; shift ;;
+        --model-size) MODEL_SIZE_ARG=(--model-size "$2"); shift 2 ;;
         --*)
             PASSTHROUGH+=("$1")
             if [[ $# -gt 1 && "$2" != --* ]]; then
@@ -33,7 +35,7 @@ OUTPUT_DIR="$SCRIPT_DIR/data/output/sapiens"
 bash "$SCRIPT_DIR/download_test_data.sh"
 
 # Install sapiens
-bash "$REPO_DIR/install.sh" --type sapiens $SLURM_ARG
+bash "$REPO_DIR/install.sh" --type sapiens $SLURM_ARG "${MODEL_SIZE_ARG[@]}"
 
 # Run pose estimation
 mkdir -p "$OUTPUT_DIR"
@@ -42,6 +44,7 @@ bash "$REPO_DIR/videos_to_poses.sh" \
     --input "$INPUT_DIR" \
     --output "$OUTPUT_DIR" \
     $SLURM_ARG \
+    "${MODEL_SIZE_ARG[@]}" \
     "${PASSTHROUGH[@]}"
 
 SAPIENS_VENV="$REPO_DIR/tools/sapiens/venv"

@@ -8,9 +8,16 @@ Additional arguments specific to Sapiens that can be passed directly to the main
 
 `--num-workers N`: number of parallel workers for processing videos (default: 1). Only useful with `--device cpu`; with GPU, multiple workers compete for GPU memory and will likely cause out-of-memory errors.
 
+`--model-size 0.3b|0.6b|1b`: which Sapiens pose model to use (default: `1b`). Smaller models are faster and require less disk space and download bandwidth; the `1b` model gives the best accuracy. This argument must be passed to **both** `install.sh` and `videos_to_poses.sh` and must match between them — the install step downloads the model, and the run step loads it.
+
+```bash
+bash install.sh --type sapiens --model-size 0.3b
+bash videos_to_poses.sh --type sapiens --input /path/to/videos --output /path/to/poses --model-size 0.3b
+```
+
 ## Model and code details
 
-This runs pose estimation using Meta's [Sapiens](https://github.com/facebookresearch/sapiens) `1B` pose model, trained on the **Goliath** keypoint set.
+This runs pose estimation using Meta's [Sapiens](https://github.com/facebookresearch/sapiens) pose models (`0.3b`, `0.6b`, or `1b`), trained on the **Goliath** keypoint set. The default is `1b`.
 
 Sapiens-Goliath defines 308 keypoints. In this repo, the two wrist points are duplicated so that each wrist appears in both the body and the corresponding hand component for compatibility with the `.pose` format, giving **310 keypoints** total.
 
@@ -34,10 +41,18 @@ Output shape: `(frames, people, 310, 2)` with a separate `confidence` array of s
 Pose estimation is performed via the `videos_to_poses` command from a fork of the
 [`pose-format`](https://github.com/sign-language-processing/pose) library located [here](https://github.com/catherine-o-brien/pose/tree/new_estimators), which wraps the Sapiens model.
 
-The model weights (`sapiens-pose-1b`, TorchScript, several GB) are hosted on Hugging Face at [`facebook/sapiens-pose-1b-torchscript`](https://huggingface.co/facebook/sapiens-pose-1b-torchscript) and downloaded on first run. Because upstream renamed the checkpoint file on the HF `main` branch, `install_sapiens.sh` pre-downloads a pinned snapshot of the model during installation to avoid a download failure at run time.
+Model weights are hosted on Hugging Face and downloaded during installation:
+
+| `--model-size` | HF repo | Approx. size |
+|---|---|---|
+| `0.3b` | [`facebook/sapiens-pose-0.3b-torchscript`](https://huggingface.co/facebook/sapiens-pose-0.3b-torchscript) | ~0.5 GB |
+| `0.6b` | [`facebook/sapiens-pose-0.6b-torchscript`](https://huggingface.co/facebook/sapiens-pose-0.6b-torchscript) | ~1 GB |
+| `1b` | [`facebook/sapiens-pose-1b-torchscript`](https://huggingface.co/facebook/sapiens-pose-1b-torchscript) | ~4 GB |
+
+Because upstream renamed the `1b` checkpoint file on the HF `main` branch, `install_sapiens.sh` pre-downloads a pinned snapshot of the `1b` model during installation to avoid a download failure at run time. The `0.3b` and `0.6b` models do not have this issue.
 
 ## Requirements
-- NVIDIA GPU with CUDA drivers (not required if `--device cpu` is used, but strongly recommended — the 1B model is large and slow on CPU)
+- NVIDIA GPU with CUDA drivers (not required if `--device cpu` is used, but strongly recommended — the `1b` model is large and slow on CPU)
 - Enough disk space and bandwidth to download the multi-GB model checkpoint
 
 ### Cluster-specific notes (if using the flag `--slurm`)

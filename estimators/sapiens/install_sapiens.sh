@@ -7,10 +7,12 @@ REPO_DIR="$(dirname "$ESTIMATORS_DIR")"
 TOOLS=$REPO_DIR/tools
 
 USE_SLURM=false
+MODEL_SIZE="1b"
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
         --slurm) USE_SLURM=true; shift ;;
+        --model-size) MODEL_SIZE="$2"; shift 2 ;;
         *) echo "Unknown argument: $1" >&2; exit 1 ;;
     esac
 done
@@ -62,8 +64,6 @@ fi
 # fresh runner.  Pin a snapshot that still hosts AP_640, and save as ".pt"
 # (no "2") — that's what download_hf_model() checks for as the "already cached"
 # sentinel before trying to download.
-MODEL_SIZE="${SAPIENS_MODEL_SIZE:-1b}"
-
 case "$MODEL_SIZE" in
     0.3b)
         SAPIENS_MODEL_FILE="sapiens_0.3b_goliath_best_goliath_AP_573_torchscript.pt"
@@ -78,7 +78,7 @@ case "$MODEL_SIZE" in
         SAPIENS_MODEL_URL="https://huggingface.co/facebook/sapiens-pose-1b-torchscript/resolve/4caa2b2290255dc8963b5ead35fe3c6e761742aa/sapiens_1b_goliath_best_goliath_AP_640_torchscript.pt2"
         ;;
     *)
-        echo "Error: Unknown SAPIENS_MODEL_SIZE='$MODEL_SIZE'. Valid values: 0.3b, 0.6b, 1b" >&2
+        echo "Error: Unknown --model-size '$MODEL_SIZE'. Valid values: 0.3b, 0.6b, 1b" >&2
         exit 1
         ;;
 esac

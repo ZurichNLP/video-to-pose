@@ -37,6 +37,4 @@ jobs:
           key: sapiens-${{ runner.os }}-${{ hashFiles('estimators/sapiens/requirements.txt', 'estimators/sapiens/install_sapiens.sh') }}-0.3b
 
       - name: Run ${{ matrix.estimator }} tests
-        env:
-          SAPIENS_MODEL_SIZE: ${{ matrix.estimator == 'sapiens' && '0.3b' || '' }}
-        run: bash test/test_${{ matrix.estimator }}.sh
+        run: bash test/test_${{ matrix.estimator }}.sh ${{ matrix.estimator == 'sapiens' && '--model-size 0.3b' || '' }}
