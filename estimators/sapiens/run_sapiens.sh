@@ -58,9 +58,12 @@ if [[ -n "$NUM_WORKERS" ]]; then
     NUM_WORKERS_ARG="--num-workers $NUM_WORKERS"
 fi
 
+MODEL_SIZE="${SAPIENS_MODEL_SIZE:-1b}"
+
 videos_to_poses \
     --format sapiens \
     --directory "$INPUT" \
+    --additional-config "model_size=${MODEL_SIZE}" \
     $USE_CPU_ARG \
     $NUM_WORKERS_ARG
 deactivate

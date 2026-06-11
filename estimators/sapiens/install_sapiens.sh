@@ -62,14 +62,34 @@ fi
 # fresh runner.  Pin a snapshot that still hosts AP_640, and save as ".pt"
 # (no "2") — that's what download_hf_model() checks for as the "already cached"
 # sentinel before trying to download.
+MODEL_SIZE="${SAPIENS_MODEL_SIZE:-1b}"
+
+case "$MODEL_SIZE" in
+    0.3b)
+        SAPIENS_MODEL_FILE="sapiens_0.3b_goliath_best_goliath_AP_573_torchscript.pt"
+        SAPIENS_MODEL_URL="https://huggingface.co/facebook/sapiens-pose-0.3b-torchscript/resolve/main/sapiens_0.3b_goliath_best_goliath_AP_573_torchscript.pt2"
+        ;;
+    0.6b)
+        SAPIENS_MODEL_FILE="sapiens_0.6b_goliath_best_goliath_AP_609_torchscript.pt"
+        SAPIENS_MODEL_URL="https://huggingface.co/facebook/sapiens-pose-0.6b-torchscript/resolve/main/sapiens_0.6b_goliath_best_goliath_AP_609_torchscript.pt2"
+        ;;
+    1b)
+        SAPIENS_MODEL_FILE="sapiens_1b_goliath_best_goliath_AP_640_torchscript.pt"
+        SAPIENS_MODEL_URL="https://huggingface.co/facebook/sapiens-pose-1b-torchscript/resolve/4caa2b2290255dc8963b5ead35fe3c6e761742aa/sapiens_1b_goliath_best_goliath_AP_640_torchscript.pt2"
+        ;;
+    *)
+        echo "Error: Unknown SAPIENS_MODEL_SIZE='$MODEL_SIZE'. Valid values: 0.3b, 0.6b, 1b" >&2
+        exit 1
+        ;;
+esac
+
 SAPIENS_PKG_DIR="$("$VENV_DIR/bin/python" -c \
     'import os, sapiens_inference; print(os.path.dirname(os.path.abspath(sapiens_inference.__file__)))')"
 SAPIENS_REPO_ROOT="$(dirname "$SAPIENS_PKG_DIR")"
 SAPIENS_MODELS_DIR="$SAPIENS_REPO_ROOT/models"
 mkdir -p "$SAPIENS_MODELS_DIR"
-SAPIENS_MODEL_DST="$SAPIENS_MODELS_DIR/sapiens_1b_goliath_best_goliath_AP_640_torchscript.pt"
-SAPIENS_MODEL_URL="https://huggingface.co/facebook/sapiens-pose-1b-torchscript/resolve/4caa2b2290255dc8963b5ead35fe3c6e761742aa/sapiens_1b_goliath_best_goliath_AP_640_torchscript.pt2"
+SAPIENS_MODEL_DST="$SAPIENS_MODELS_DIR/$SAPIENS_MODEL_FILE"
 if [ ! -f "$SAPIENS_MODEL_DST" ]; then
-    echo "Pre-downloading Sapiens pose model to $SAPIENS_MODEL_DST ..."
+    echo "Pre-downloading Sapiens pose model ($MODEL_SIZE) to $SAPIENS_MODEL_DST ..."
     wget -q --show-progress -O "$SAPIENS_MODEL_DST" "$SAPIENS_MODEL_URL"
 fi
