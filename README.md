@@ -90,7 +90,7 @@ Estimator-specific tests live in the `test/` directory. See [`test/README.md`](t
 @misc{obrien-et-al-2026video-to-pose, 
     title={Convenience code for installing and using several pose estimation systems},
     author={O'Brien, Catherine and Sant, Gerard and M{\"u}ller, Mathias},
-    howpublished={\url{https://arxiv.org/html/2604.24609v1}},
+    howpublished={\url{https://github.com/ZurichNLP/video-to-pose}},
     year={2026}
 }
 ```
