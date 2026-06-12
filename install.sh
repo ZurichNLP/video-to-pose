@@ -5,11 +5,13 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 
 TYPE=""
 USE_SLURM=false
+MODEL_SIZE=""
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
         --type) TYPE="$2"; shift 2 ;;
         --slurm) USE_SLURM=true; shift ;;
+        --model-size) MODEL_SIZE="$2"; shift 2 ;;
         *) echo "Unknown argument: $1" >&2; exit 1 ;;
     esac
 done
@@ -23,6 +25,11 @@ fi
 SLURM_ARG=""
 if [ "$USE_SLURM" = true ]; then
     SLURM_ARG="--slurm"
+fi
+
+MODEL_SIZE_ARG=()
+if [[ -n "$MODEL_SIZE" ]]; then
+    MODEL_SIZE_ARG=(--model-size "$MODEL_SIZE")
 fi
 
 case "$TYPE" in
@@ -47,9 +54,12 @@ case "$TYPE" in
     sdpose)
         bash "$SCRIPT_DIR/estimators/sdpose/install_sdpose.sh" $SLURM_ARG
         ;;
+    sapiens)
+        bash "$SCRIPT_DIR/estimators/sapiens/install_sapiens.sh" $SLURM_ARG "${MODEL_SIZE_ARG[@]}"
+        ;;
     *)
         echo "Unknown estimator type: $TYPE" >&2
-        echo "Available types: openpose, mediapipe, alphapose, simplest_x, mmposewholebody, openpifpaf, sdpose" >&2
+        echo "Available types: openpose, mediapipe, alphapose, simplest_x, mmposewholebody, openpifpaf, sdpose, sapiens" >&2
         exit 1
         ;;
 esac

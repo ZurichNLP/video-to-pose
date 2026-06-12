@@ -17,7 +17,7 @@ jobs:
 
     strategy:
       matrix:
-        estimator: [mediapipe, mmposewholebody, openpifpaf, sdpose]
+        estimator: [mediapipe, mmposewholebody, openpifpaf, sapiens, sdpose]
       fail-fast: false
 
     steps:
@@ -29,5 +29,12 @@ jobs:
         with:
           python-version: '3.10'
 
+      - name: Cache sapiens tools
+        if: matrix.estimator == 'sapiens'
+        uses: actions/cache@v4
+        with:
+          path: tools/sapiens
+          key: sapiens-${{ runner.os }}-${{ hashFiles('estimators/sapiens/requirements.txt', 'estimators/sapiens/install_sapiens.sh') }}-0.3b
+
       - name: Run ${{ matrix.estimator }} tests
-        run: bash test/test_${{ matrix.estimator }}.sh
+        run: bash test/test_${{ matrix.estimator }}.sh ${{ matrix.estimator == 'sapiens' && '--model-size 0.3b' || '' }}

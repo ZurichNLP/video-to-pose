@@ -31,7 +31,7 @@ bash videos_to_poses.sh \
 
 | Parameter |   |
 |----------|---|
-| --type | Which pose estimator to use. Available choices: `openpose`, `mediapipe`, `alphapose`, `simplest_x`, `openpifpaf`, `mmposewholebody`, `sdpose`  |
+| --type | Which pose estimator to use. Available choices: `openpose`, `mediapipe`, `alphapose`, `simplest_x`, `openpifpaf`, `mmposewholebody`, `sdpose`, `sapiens`  |
 | --input  | Path to folder of videos  |
 | --output | Path to folder of .pose files  |
 | --device (optional) | `cpu` or `gpu`. Not all estimators support both; unsupported combinations will fail with a clear error. |
@@ -67,6 +67,7 @@ to specify the number of chunks to split the input videos into, and the number o
 | openpifpaf      | 133-keypoint COCO WholeBody model (`shufflenetv2k30-wholebody`) | CPU or GPU | No | Python 3.9 or 3.10 |
 | mmposewholebody | 133-keypoint COCO WholeBody model | CPU or GPU (auto-detected) | No | Python 3, NVIDIA GPU with CUDA strongly recommended |
 | sdpose          | 133-keypoint COCO WholeBody model | CPU or GPU | No | Python 3, NVIDIA GPU with CUDA strongly recommended |
+| sapiens | 38-keypoint Goliath model with `sapiens_1b_goliath_best_goliath_AP_640` | CPU or GPU (auto-detected) | For installation only | NVIDIA GPU with CUDA strongly recommended |
 
 ## Details on output pose format
 
@@ -89,7 +90,7 @@ Estimator-specific tests live in the `test/` directory. See [`test/README.md`](t
 @misc{obrien-et-al-2026video-to-pose, 
     title={Convenience code for installing and using several pose estimation systems},
     author={O'Brien, Catherine and Sant, Gerard and M{\"u}ller, Mathias},
-    howpublished={\url{https://github.com/ZurichNLP/video-to-pose}},
+    howpublished={\url{https://arxiv.org/html/2604.24609v1}},
     year={2026}
 }
 ```
